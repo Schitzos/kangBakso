@@ -12,8 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		237FD7A7EF39121D1E93B404 /* Pods_KangBakso.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93C38261887A762EE45A106 /* Pods_KangBakso.framework */; };
-		5540DACE2CC0181300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DACD2CC0181300B6B1CB /* GoogleService-Info.plist */; };
-		5540DACF2CC0181300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DACD2CC0181300B6B1CB /* GoogleService-Info.plist */; };
+		5540DAD12CC0218300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */; };
+		5540DAD22CC0218300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B593C509B678FD9F586EF949 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EB967852B8CF600663397F55 /* PrivacyInfo.xcprivacy */; };
 		DDCE71109EA57C895414955D /* Pods_KangBakso_KangBaksoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E38422E86493BF61917F402 /* Pods_KangBakso_KangBaksoTests.framework */; };
@@ -41,7 +41,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KangBakso/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = KangBakso/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1E38422E86493BF61917F402 /* Pods_KangBakso_KangBaksoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KangBakso_KangBaksoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5540DACD2CC0181300B6B1CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E12D3165B1E2EEEB8F36C09 /* Pods-KangBakso-KangBaksoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KangBakso-KangBaksoTests.release.xcconfig"; path = "Target Support Files/Pods-KangBakso-KangBaksoTests/Pods-KangBakso-KangBaksoTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KangBakso/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF8DCC67419566E2B5C79D67 /* Pods-KangBakso.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KangBakso.release.xcconfig"; path = "Target Support Files/Pods-KangBakso/Pods-KangBakso.release.xcconfig"; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				5540DACD2CC0181300B6B1CB /* GoogleService-Info.plist */,
+				5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* KangBakso */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* KangBaksoTests */,
@@ -244,7 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5540DACF2CC0181300B6B1CB /* GoogleService-Info.plist in Resources */,
+				5540DAD12CC0218300B6B1CB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,7 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				5540DACE2CC0181300B6B1CB /* GoogleService-Info.plist in Resources */,
+				5540DAD22CC0218300B6B1CB /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B593C509B678FD9F586EF949 /* PrivacyInfo.xcprivacy in Resources */,
 			);
