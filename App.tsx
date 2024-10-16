@@ -72,9 +72,9 @@ function App(): React.JSX.Element {
         console.log('Location permission denied');
       }
     }else{
+      console.log('here');
       const granted = await Geolocation.requestAuthorization('whenInUse');
-      console.log('granted',granted);
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      if (granted === 'granted') {
         console.log('You can use the location');
         getLocation();
       } else {
@@ -107,8 +107,7 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    (Platform.OS === 'android') && requestLocationPermission();
-    (Platform.OS === 'ios') && getLocation();
+    requestLocationPermission();
     return subscriber; // unsubscribe on unmount
   }, []);
 
