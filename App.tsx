@@ -1,118 +1,168 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Button,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
+import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import Geolocation from 'react-native-geolocation-service';
+import Config from 'react-native-config';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+GoogleSignin.configure({
+  webClientId: Config.WEB_CLIENT_ID,
+});
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [userInfo,setUserInfo] = useState(null);
+  const [mLat, setMLat] = useState(0); //latitude position
+  const [mLong, setMLong] = useState(0); //longitude position
+  const [location, setLocation] = useState(null);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  async function onGoogleButtonPress() {
+    try{
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    const response = await GoogleSignin.signIn();
+    console.log('response',response);
+    if(isSuccessResponse(response)){
+      const {data} = response;
+      const idToken = data?.idToken;
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken!);
+      return auth().signInWithCredential(googleCredential);
+    }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function onLogoutPress(){
+    auth()
+    .signOut()
+    .then(() => console.log('User signed out!'));
+  }
+
+  function onAuthStateChanged(user) {
+    setUserInfo(user);
+  }
+
+  const requestLocationPermission = async () => {
+    try {
+      if(Platform.OS === 'android'){ // Android only
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'KangBakso App Location Permission',
+          message:
+            'KangBakso App needs access to your location' +
+            'so you order the Bakso',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+        getLocation();
+      } else {
+        console.log('Location permission denied');
+      }
+    }else{
+      const granted = await Geolocation.requestAuthorization('whenInUse');
+      console.log('granted',granted);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+        getLocation();
+      } else {
+        console.log('Location permission denied');
+      }
+    }
+    } catch (err) {
+      console.warn(err);
+    }
   };
 
+  const getLocation = async () => {
+    try {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          setLocation(position);
+          setMLat(position.coords.latitude);
+          setMLong(position.coords.longitude);
+          console.log(position);
+        },
+        (error) => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+      } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    (Platform.OS === 'android') && requestLocationPermission();
+    (Platform.OS === 'ios') && getLocation();
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView>
+      {!userInfo && <Button title="Sign in" onPress={onGoogleButtonPress} />}
+
+      {userInfo &&
+      <View style={styles.main}>
+        <Text>Hello World {userInfo.displayName}</Text>
+        <View style={styles.mapContainer}>
+        <MapView
+        provider={PROVIDER_GOOGLE}
+        // provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+        style={styles.map}
+        region={{
+          latitude: mLat,
+          longitude: mLong,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
+        >
+           <Marker
+            coordinate={{latitude:mLat,longitude:mLong}}
+            title={'here'}
+            description={'im here'}
+          />
+          </MapView>
+      <Button title="Sign Out" onPress={onLogoutPress} />
+      <Button title="GetLocation" onPress={getLocation} />
+      </View>
+      </View>}
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
 export default App;
+
+const styles = StyleSheet.create({
+  main:{
+    display:'flex',
+  },
+  mapContainer:{
+    width:'100%',
+    height:'100%',
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    height: 800,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+ });

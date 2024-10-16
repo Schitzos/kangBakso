@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "968586852360",
+    "project_id": "kangbakso-e669d",
+    "storage_bucket": "kangbakso-e669d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968586852360:android:48f5a8bf1f3439df3f39bd",
+        "android_client_info": {
+          "package_name": "com.kangbakso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968586852360-lasgvl3bk4gp9sl29e9l2htn0f1dnrff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kangbakso",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "968586852360-9bsp3obf8jh6f2e9b7cme5mas06bn6i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZfA6X6vckDKfz4P_hidDmJ4lXnvHj-ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968586852360-9bsp3obf8jh6f2e9b7cme5mas06bn6i3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "968586852360-faqfe03i4qlvkfskp0j897tk3r7a8igh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.KangBakso"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
