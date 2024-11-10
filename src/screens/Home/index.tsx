@@ -9,15 +9,13 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import UserMarker from '@/fragments/Home/Marker';
-import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 import Loading from '@/components/elements/Loader';
 import { useLocation } from '@/hooks/user/useLocation';
 
 export default function Home() {
   const { onLogout, onGoogleSignIn } = useAuth();
   const { getLocation } = useLocation();
-  const user = useBoundStore((state) => state.user);
-  const {permissionStatus, requestLocationPermission} = useAccessPermission();
+  const {user, profile} = useBoundStore((state) => state);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Login'>>();
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 0,
@@ -35,9 +33,6 @@ export default function Home() {
 
   useEffect(() => {
     const init = async () => {
-      if(permissionStatus !== 'granted') {
-        await requestLocationPermission();
-      }
       const location = await getLocation();
       setDefaultLocation((prev) => ({
         ...prev,
@@ -49,9 +44,17 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if(!user || !profile) {
+      navigation.navigate('Login', { refresh: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile, user]);
+
   if(defaultLocation.latitude === 0 && defaultLocation.longitude === 0) {
     return <Loading/>;
   }
+
   return (
     <SafeAreaView>
       <View>

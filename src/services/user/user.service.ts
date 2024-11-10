@@ -11,9 +11,6 @@ const updateLocationInFirestore = (latitude: number, longitude: number, user: Us
         location: new GeoPoint(latitude, longitude),
         updatedAt: firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => {
-        console.log('User location updated in Firestore');
-      })
       .catch((error) => console.error('Error updating location:', error));
   }
 };

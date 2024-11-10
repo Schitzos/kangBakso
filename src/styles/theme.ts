@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 const colors = {
-  primary: '#84BD01',
+  primary: '#ED0226',
   error: '#FF4267',
   error50: '#FFECF0',
   error100: '#FFC4D0',
@@ -12,17 +12,18 @@ const colors = {
   success50: '#EEFBF8',
   success100: '#C9F2EA',
   success200: '#3A9784',
-  black: '#121212',
+  black: '#001A41',
   black50: 'rgba(18, 18, 18, 0.5)',
   white: '#FFFFFF',
-  neutral: '#D9D9D9',
-  neutral50: '#5D5D5D',
+  neutral: '#EFF1F4',
+  neutral50: '#FFFFFF80',
   neutral100: '#9F9F9F',
   neutral200: '#7A7A7A',
   neutral300: '#EEEEEE',
   neutral400: '#B0B0B0',
   neutral500: '#6D6D6D',
-  blue: '#2043FF',
+  blue: '#0050AE',
+  borderColor: '#CCCFD3',
 };
 
 const fonts = {

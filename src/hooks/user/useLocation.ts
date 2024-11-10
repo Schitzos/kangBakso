@@ -53,14 +53,13 @@ export function useLocation() {
       },
       {
         enableHighAccuracy: true,
-        distanceFilter: 0, // Update location every time it changes
-        interval: 0, // Update every 5 seconds
+        distanceFilter: 5, // Update location every time it changes
+        interval: 5, // Update every 5 seconds
       }
     );
   };
 
   const stopWatchingPosition = () => {
-    console.log('here');
     if (watchId !== null) {
       Geolocation.clearWatch(watchId);
       watchId = null;

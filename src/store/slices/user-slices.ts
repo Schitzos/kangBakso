@@ -1,18 +1,23 @@
 // slices/user-slices.ts
 import { ProfileData, UserData } from '@/type/User/type';
 import MMKVstorage from '@/utils/adapters/mmkv';
+import { PermissionsAndroid } from 'react-native';
 import { StateCreator } from 'zustand';
 
 export interface UserSlice {
   user: UserData | null; // User can be null if not logged in
-  profile: ProfileData | undefined;
+  profile: ProfileData | null;
   isAuthenticated: boolean; // Authentication status
+  locationPermissions: LocationPermissionStatus;
 
   setUser: (userData: UserData) => void;
-  setProfile: (profileData: ProfileData) => void;
+  setProfile: (profileData: ProfileData|null) => void;
   clearUser: () => void;
   updateUser: (updatedData: Partial<UserData>) => void; // Allow partial updates
+  setLocationPermissions: (permissions: LocationPermissionStatus) => void;
 }
+
+type LocationPermissionStatus = 'granted' | 'denied' | 'pending';
 
 // Create the user slice
 export const createUserSlice: StateCreator<UserSlice> = (set) => {
@@ -23,7 +28,8 @@ export const createUserSlice: StateCreator<UserSlice> = (set) => {
   return {
     user: parsedUser,
     isAuthenticated: !!parsedUser, // Set authentication status based on loaded user
-    profile: undefined,
+    profile: null,
+    locationPermissions: PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION as LocationPermissionStatus,
 
     // Action to set user details
     setUser: (userData: UserData) => {
@@ -32,7 +38,7 @@ export const createUserSlice: StateCreator<UserSlice> = (set) => {
     },
 
     // Action to set role
-    setProfile: (profileData: ProfileData) => {
+    setProfile: (profileData: ProfileData| null) => {
       set({ profile: profileData });
     },
 
@@ -51,6 +57,10 @@ export const createUserSlice: StateCreator<UserSlice> = (set) => {
         }
         return { user: updatedUser };
       });
+    },
+
+    setLocationPermissions: (permissions: LocationPermissionStatus) => {
+      set({ locationPermissions: permissions });
     },
   };
 };

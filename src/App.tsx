@@ -6,40 +6,29 @@ import Navigation from '@/navigation';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import { useAuth } from './hooks/auth/useAuth';
+import useAppState from './hooks/appState/useAppState';
 
 GoogleSignin.configure({
   webClientId: Config.WEB_CLIENT_ID,
 });
 
 function App(): React.JSX.Element {
-  const { onAuthStateChanged } = useAuth();
-  const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+  const { onAuthStateChanged, setUserOffline } = useAuth();
+  const [, setAppState] = useState<AppStateStatus>(AppState.currentState);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, [onAuthStateChanged]);
 
-  useEffect(() => {
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (appState.match(/inactive|background/) && nextAppState === 'active') {
-        console.log('App has come to the foreground!');
-      } else if (nextAppState === 'background') {
-        console.log('App has gone to the background.');
-      }
-      setAppState(nextAppState);
-    };
-
-    const appStateListener = AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      appStateListener.remove(); // Clean up the listener on unmount
-    };
-  }, [appState]);
+  useAppState((nextAppState) => {
+    setUserOffline();
+    setAppState(nextAppState);
+  });
 
   return (
     <GestureHandlerRootView>
-      <Navigation/>
+      <Navigation />
     </GestureHandlerRootView>
   );
 }

@@ -1,6 +1,7 @@
 import theme from '@/styles/theme';
 import React, { SVGProps } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View, ViewStyle } from 'react-native';
+import { TouchableOpacity, Text, View, ViewStyle } from 'react-native';
+import {styles} from './styles';
 
 // Define the button sizes as a union type
 type ButtonSize = 'small' | 'medium' | 'large';
@@ -17,22 +18,24 @@ interface CustomButtonProps {
   rightIcon?: React.ComponentType<SVGProps<SVGSVGElement>>;
   style?: ViewStyle;
   fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'; // Add fontWeight prop
+  disabled?: boolean;
 }
 
 /**
- * A customizable button component that can be used to display text with optional icons.
+ * A customizable button component with features such as:
+ * - size (small, medium, large)
+ * - button color
+ * - label color
+ * - label text
+ * - width (accepts number or specific string values)
+ * - left icon
+ * - right icon
+ * - custom styles
+ * - font weight
+ * - disabled property
  *
- * @param {object} props Component props
- * @prop {function} onPress The function to call when the button is pressed
- * @prop {'small' | 'medium' | 'large'} [size='small'] The size of the button
- * @prop {string} [buttonColor=theme.colors.primary] The background color of the button
- * @prop {string} [labelColor=theme.colors.white] The color of the button text
- * @prop {string} label The text to display on the button
- * @prop {number|string} [width='100%'] The width of the button
- * @prop {React.ComponentType<SVGProps<SVGSVGElement>>} [leftIcon] The left icon
- * @prop {React.ComponentType<SVGProps<SVGSVGElement>>} [rightIcon] The right icon
- * @prop {ViewStyle} [style] Additional styles for the button
- * @prop {'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'} [fontWeight='bold'] The font weight of the button text
+ * @param {{onPress: () => void, size?: ButtonSize, buttonColor?: string, labelColor?: string, label: string, width?: DimensionValue, leftIcon?: React.ComponentType<SVGProps<SVGSVGElement>>, rightIcon?: React.ComponentType<SVGProps<SVGSVGElement>>, style?: ViewStyle, fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', disabled?: boolean}} props
+ * @returns {React.ReactElement} A React element representing the button
  */
 const Button: React.FC<CustomButtonProps> = ({
   onPress,
@@ -45,6 +48,7 @@ const Button: React.FC<CustomButtonProps> = ({
   rightIcon: RightIcon,
   style,
   fontWeight = 'bold', // Set a default font weight
+  disabled = false,
 }) => {
   // Set styles based on size prop
   const sizeStyles = {
@@ -76,6 +80,7 @@ const Button: React.FC<CustomButtonProps> = ({
         style,
       ]}
       onPress={onPress}
+      disabled={disabled}
     >
       <View style={styles.content}>
         {LeftIcon && <LeftIcon width={16} height={16} />}
@@ -87,34 +92,5 @@ const Button: React.FC<CustomButtonProps> = ({
     </TouchableOpacity>
   );
 };
-
-// Define styles
-const styles = StyleSheet.create({
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4, // Gap between text and icons
-  },
-  smallButton: {
-    paddingVertical: 0, // Set padding as per the new height
-    paddingHorizontal: 10,
-  },
-  mediumButton: {
-    paddingVertical: 0, // Set padding as per the new height
-    paddingHorizontal: 15,
-  },
-  largeButton: {
-    paddingVertical: 0, // Set padding as per the new height
-    paddingHorizontal: 20,
-  },
-  label: {
-    // No default font weight here, it's set dynamically
-  },
-});
 
 export default Button;

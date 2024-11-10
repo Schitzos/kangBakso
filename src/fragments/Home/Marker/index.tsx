@@ -12,7 +12,7 @@ import { StyleSheet, View } from 'react-native';
 import TextView from '@/components/elements/TextView';
 
 export default function UserMarker() {
-  const { requestLocationPermission, permissionStatus } = useAccessPermission();
+  const { requestLocationPermission, locationPermissions } = useAccessPermission();
   const { watchPosition } = useLocation();
   const {user, profile} = useBoundStore((state) => state);
   const [locations, setLocations] = useState<UserLocation[]>([]);
@@ -21,7 +21,7 @@ export default function UserMarker() {
 
   useEffect(() => {
     const init = async () => {
-      if (permissionStatus !== 'granted') {
+      if (locationPermissions !== 'granted') {
         await requestLocationPermission();
       }
     };
@@ -41,10 +41,6 @@ export default function UserMarker() {
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if(locations.length === 0) {
-    return null;
-  }
 
   return (
     <>

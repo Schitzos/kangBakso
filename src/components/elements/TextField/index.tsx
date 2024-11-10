@@ -89,7 +89,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <View style={[
         styles.inputContainer,
         error && styles.inputError,
-        {height: 36 * numberOfLines},
+        {height: 40 * numberOfLines},
         // eslint-disable-next-line react-native/no-inline-styles
         {alignItems: numberOfLines === 1 ? 'center' : 'flex-start'},
       ]}>
@@ -118,10 +118,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '400',
     marginBottom: 4,
-    marginLeft: 8,
     color: theme.colors.black,
   },
   requiredMark: {
@@ -130,11 +129,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: theme.colors.neutral50,
+    borderColor: theme.colors.borderColor,
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 8,
     backgroundColor: theme.colors.white,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     justifyContent: 'space-between', // Add this to space out children
   },
   inputError: {
@@ -142,9 +141,9 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
-    color: theme.colors.primary,
+    color: theme.colors.black,
     paddingVertical: 0, // Remove vertical padding
   },
   errorText: {

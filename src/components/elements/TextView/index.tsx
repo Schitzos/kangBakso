@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
-    color: 'black',
+    color: theme.colors.black,
     marginBottom: 0,
     width: 'auto',
   },
