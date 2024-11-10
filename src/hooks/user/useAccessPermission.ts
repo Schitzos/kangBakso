@@ -20,8 +20,9 @@ export function useAccessPermission() {
           return 'denied';
         }
       } else {
-        const granted = await Geolocation.requestAuthorization('whenInUse');
-        if (granted === 'granted') {
+        const grantedInUse = await Geolocation.requestAuthorization('whenInUse');
+        const grantedAlways = await Geolocation.requestAuthorization('always');
+        if (grantedInUse === 'granted' || grantedAlways === 'granted') {
           setLocationPermissions('granted');
           return 'granted';
         } else {

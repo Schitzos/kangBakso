@@ -16,6 +16,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import theme from '@/styles/theme';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 import { Alert, Linking, Platform } from 'react-native';
+import {styles} from './styles';
+import { useAuth } from '@/hooks/auth/useAuth';
 
 export interface FormDataLogin {
     name: string;
@@ -23,9 +25,9 @@ export interface FormDataLogin {
 }
 
 export default function RoleForm(){
-  const user = useBoundStore((state) => state.user);
+  const {user} = useBoundStore((state) => state);
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
+  const {onLogout} = useAuth();
   const { getLocation } = useLocation();
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
     defaultValues: {
@@ -34,9 +36,17 @@ export default function RoleForm(){
     },
   });
   const [isChecked, setIsChecked] = useState(false);
-  // console.log('locationPermissions', locationPermissions);
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
+
+  const handleSignOut = async () => {
+    await onLogout();
+    navigation.navigate('Login', { refresh: true });
+  };
+
+
   const onSubmit = async (data: FormDataLogin) => {
     try {
+      console.log('locationPermissions', locationPermissions);
       // Check and request permission only if not granted yet
       if (locationPermissions !== 'granted') {
         await requestLocationPermission().then(async res=>{
@@ -45,7 +55,7 @@ export default function RoleForm(){
           }else{
             Alert.alert(
               'Location Permission Needed',
-              'Location access is needed to find nearby Bakso vendors. Please enable location permissions in settings.',
+              `Location access is needed to find nearby Bakso ${data.role === 'Seller' ? 'Customers' : 'Vendors'}. Please enable location permissions in settings.`,
               [
                 { text: 'Cancel', style: 'cancel' },
                 {
@@ -90,7 +100,7 @@ export default function RoleForm(){
   };
 
   return (
-    <View style={{ gap: 16 }}>
+    <View style={styles.container}>
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -142,6 +152,7 @@ export default function RoleForm(){
         fontWeight="400"
         disabled={!isChecked}
       />
+      {user && <Button label="Sign Out" onPress={handleSignOut} size="large" fontWeight="400" />}
     </View>
   );
 }

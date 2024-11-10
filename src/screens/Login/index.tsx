@@ -8,7 +8,8 @@ import {styles} from './styles';
 import TextView from '@/components/elements/TextView';
 
 export default function Login(){
-  const user = useBoundStore((state) => state.user); // Subscribe to user state changes
+  const user = useBoundStore((state) => state.user);
+
   return(
     <>
       <SafeAreaView/>

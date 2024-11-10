@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 4,
+    zIndex: 1000,
   },
   dropdown: {
     minHeight: 40,

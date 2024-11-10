@@ -24,7 +24,7 @@ export function useLocation() {
         },
         (error) => {
           console.log('Location error:', error.message);
-          reject({ error: error.message });
+          reject(new Error(error.message));
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
@@ -43,7 +43,7 @@ export function useLocation() {
         );
 
         if (moved) {
-          userService.updateLocationInFirestore(latitude, longitude, user!);
+          userService.updateLocationInFirestore(latitude, longitude, user);
           userLocationRef.current = { latitude, longitude };
           setLocation({ latitude, longitude });
         }

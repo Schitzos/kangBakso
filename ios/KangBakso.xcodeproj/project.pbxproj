@@ -13,12 +13,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		516E35E38C7D4A5E912EB940 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AC0678F41E45DC88F564E2 /* BootSplash.storyboard */; };
 		5540DAD12CC0218300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */; };
 		5540DAD22CC0218300B6B1CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */; };
+		7EE41F33A01249FEAB24D23B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507366B9739140DF81CABF5C /* Colors.xcassets */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B593C509B678FD9F586EF949 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EB967852B8CF600663397F55 /* PrivacyInfo.xcprivacy */; };
-		516E35E38C7D4A5E912EB940 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AC0678F41E45DC88F564E2 /* BootSplash.storyboard */; };
-		7EE41F33A01249FEAB24D23B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507366B9739140DF81CABF5C /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KangBakso/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KangBakso/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = KangBakso/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		48AC0678F41E45DC88F564E2 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = KangBakso/BootSplash.storyboard; sourceTree = "<group>"; };
+		507366B9739140DF81CABF5C /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = KangBakso/Colors.xcassets; sourceTree = "<group>"; };
 		5540DAD02CC0218300B6B1CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KangBakso/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E0EBA5CA520A766B4B07C4A /* Pods-KangBakso-KangBaksoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KangBakso-KangBaksoTests.release.xcconfig"; path = "Target Support Files/Pods-KangBakso-KangBaksoTests/Pods-KangBakso-KangBaksoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -52,8 +54,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F6822CE0EE4C3248D522AA7B /* Pods-KangBakso-KangBaksoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KangBakso-KangBaksoTests.debug.xcconfig"; path = "Target Support Files/Pods-KangBakso-KangBaksoTests/Pods-KangBakso-KangBaksoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDBAD757976388FE7D2EF92C /* Pods-KangBakso.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KangBakso.debug.xcconfig"; path = "Target Support Files/Pods-KangBakso/Pods-KangBakso.debug.xcconfig"; sourceTree = "<group>"; };
-		48AC0678F41E45DC88F564E2 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "KangBakso/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		507366B9739140DF81CABF5C /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "KangBakso/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -631,7 +631,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -715,7 +718,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

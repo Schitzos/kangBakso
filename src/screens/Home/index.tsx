@@ -1,9 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import TextView from '@/components/elements/TextView';
 import MapView, {  PROVIDER_GOOGLE } from 'react-native-maps';
-import Button from '@/components/elements/Button';
-import { useAuth } from '@/hooks/auth/useAuth';
 import { useBoundStore } from '@/store/store';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types';
@@ -13,7 +10,6 @@ import Loading from '@/components/elements/Loader';
 import { useLocation } from '@/hooks/user/useLocation';
 
 export default function Home() {
-  const { onLogout, onGoogleSignIn } = useAuth();
   const { getLocation } = useLocation();
   const {user, profile} = useBoundStore((state) => state);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Login'>>();
@@ -23,13 +19,7 @@ export default function Home() {
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   });
-  const unsubscribeRef = useRef<() => void | undefined>();
 
-  const handleSignOut = async () => {
-    unsubscribeRef.current?.();
-    await onLogout();
-    navigation.navigate('Login', { refresh: true });
-  };
 
   useEffect(() => {
     const init = async () => {
@@ -58,9 +48,6 @@ export default function Home() {
   return (
     <SafeAreaView>
       <View>
-        <TextView>Home {user?.displayName}</TextView>
-        {user && <Button label="Sign Out" onPress={handleSignOut} />}
-        {!user && <Button label="Google Sign in" onPress={onGoogleSignIn} />}
         <View style={styles.mapContainer}>
           <MapView
             provider={PROVIDER_GOOGLE}
