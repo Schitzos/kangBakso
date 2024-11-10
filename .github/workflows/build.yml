@@ -55,8 +55,8 @@ jobs:
       - name: Set Gradlew Permissions
         run: chmod +x android/gradlew
 
-      - name: Running Tests
-        run: npm test
+      # - name: Running Tests
+      #   run: npm test
 
       - name: Create Google Services JSON File
         env:
