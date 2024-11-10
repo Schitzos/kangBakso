@@ -1,4 +1,4 @@
-name: Firebase App Distribution PokeQuest
+name: Firebase App Distribution
 
 on:
   push:
