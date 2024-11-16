@@ -48,7 +48,7 @@ const SelectPicker: React.FC<SelectPickerProps> = ({ options = [], selectedValue
         labelStyle={styles.dropdownLabel}
         dropDownContainerStyle={styles.dropdownItem}
         // @ts-ignore
-        arrowIconStyle={{tintColor: theme.colors.primary}}
+        arrowIconStyle={{ tintColor: theme.colors.primary }}
         listMode={'SCROLLVIEW'}
         zIndex={1000}
         zIndexInverse={1000}

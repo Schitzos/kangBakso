@@ -16,7 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import theme from '@/styles/theme';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 import { Alert, Linking, Platform } from 'react-native';
-import {styles} from './styles';
+import { styles } from './styles';
 import { useAuth } from '@/hooks/auth/useAuth';
 
 export interface FormDataLogin {
@@ -25,9 +25,9 @@ export interface FormDataLogin {
 }
 
 export default function RoleForm(){
-  const {user} = useBoundStore((state) => state);
+  const { user } = useBoundStore((state) => state);
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
-  const {onLogout} = useAuth();
+  const { onLogout } = useAuth();
   const { getLocation } = useLocation();
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
     defaultValues: {
@@ -111,7 +111,7 @@ export default function RoleForm(){
             onChangeText={onChange}
             placeholder="Masukkan nama"
             error={errors.name ? 'This field is required.' : undefined}
-            disabled={true}
+            disabled={false}
           />
         )}
         name="name"
@@ -135,11 +135,11 @@ export default function RoleForm(){
         name="role"
         rules={{ required: true }}
       />
-      <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <CheckBox
           value={isChecked}
           onValueChange={setIsChecked}
-          tintColors={{ true: theme.colors.blue, false: theme.colors.blue}} // Set checked and unchecked colors
+          tintColors={{ true: theme.colors.blue, false: theme.colors.blue }} // Set checked and unchecked colors
         />
         <TextView fz={10} style={{ marginLeft: 8, flexWrap: 'wrap', width: '90%' }} lineHeight={16}>
           Dengan menggunakan aplikasi ini Anda telah setuju untuk membagikan lokasi Anda kepada para tukang Bakso Keliling.

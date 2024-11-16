@@ -1,12 +1,15 @@
 name: Firebase App Distribution
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed # Triggers only when a PR is closed
     branches:
-      - main
+      - main # Ensures it runs only for PRs targeting the main branch
 
 jobs:
   sonarcloud:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -20,6 +23,7 @@ jobs:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
 
   firebase_app_distribution:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     # needs: sonarcloud
 

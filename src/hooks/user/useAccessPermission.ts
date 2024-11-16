@@ -4,7 +4,7 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 export function useAccessPermission() {
-  const {locationPermissions, setLocationPermissions} = useBoundStore((state) => state);
+  const { locationPermissions, setLocationPermissions } = useBoundStore((state) => state);
   const requestLocationPermission = useCallback(async () => {
     try {
       if (Platform.OS === 'android' && locationPermissions !== 'granted') {

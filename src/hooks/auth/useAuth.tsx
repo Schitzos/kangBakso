@@ -8,8 +8,8 @@ import { mapFirebaseUserToUserData } from '@/utils/common';
 import authService from '@/services/auth/auth.service';
 
 export function useAuth() {
-  const {clearUser, setProfile} = useBoundStore.getState();
-  const {stopWatchingPosition} = useLocation();
+  const { clearUser, setProfile } = useBoundStore.getState();
+  const { stopWatchingPosition } = useLocation();
 
   const onGoogleSignIn = async () => {
     try {
@@ -17,7 +17,7 @@ export function useAuth() {
       const response = await GoogleSignin.signIn();
 
       if (isSuccessResponse(response)) {
-        const {data} = response;
+        const { data } = response;
         const idToken = data?.idToken;
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         return auth().signInWithCredential(googleCredential);
@@ -35,7 +35,7 @@ export function useAuth() {
         isOnline: false,
       };
       if(user){
-        await authService.setOffline({user, payload});
+        await authService.setOffline({ user, payload });
       }
       clearUser();
       setProfile(null);
@@ -57,10 +57,10 @@ export function useAuth() {
 
   const setUserOffline = useCallback(async () => {
     const task = async () => {
-      const {user} = useBoundStore.getState();
+      const { user } = useBoundStore.getState();
       if(user){
         setTimeout(() => {
-          authService.setOffline({user: user, payload: {isOnline: false}});
+          authService.setOffline({ user: user, payload: { isOnline: false } });
           setProfile(null);
         }, 1000 * 5);
       }
@@ -90,5 +90,5 @@ export function useAuth() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { onGoogleSignIn, onLogout, onAuthStateChanged, setUserOffline};
+  return { onGoogleSignIn, onLogout, onAuthStateChanged, setUserOffline };
 }

@@ -14,9 +14,9 @@ import TextView from '@/components/elements/TextView';
 export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
   const { watchPosition } = useLocation();
-  const {user, profile} = useBoundStore((state) => state);
+  const { user, profile } = useBoundStore((state) => state);
   const [locations, setLocations] = useState<UserLocation[]>([]);
-  const [myLocation, setMyLocation] = useState({latitude: profile?.location.latitude, longitude: profile?.location.longitude});
+  const [myLocation, setMyLocation] = useState({ latitude: profile?.location.latitude, longitude: profile?.location.longitude });
   const unsubscribeRef = useRef<() => void | undefined>();
 
   useEffect(() => {
@@ -45,10 +45,15 @@ export default function UserMarker() {
   return (
     <>
       <Marker
-        coordinate={{latitude: myLocation.latitude!, longitude: myLocation.longitude!}}
+        coordinate={{ latitude: myLocation.latitude!, longitude: myLocation.longitude! }}
         title={user?.displayName}
         description={`Online ${profile?.role}`}
-      />
+      >
+        <View style={styles.customMarker}>
+          {profile?.role === 'Buyer' && <IconBuyer width={40} height={40}/>}
+          {profile?.role === 'Seller' && <IconSeller width={40} height={40}/>}
+        </View>
+      </Marker>
       {locations.map((location) => (
         <Marker
           key={location.id}

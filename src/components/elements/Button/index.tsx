@@ -1,7 +1,7 @@
 import theme from '@/styles/theme';
 import React, { SVGProps } from 'react';
 import { TouchableOpacity, Text, View, ViewStyle } from 'react-native';
-import {styles} from './styles';
+import { styles } from './styles';
 
 // Define the button sizes as a union type
 type ButtonSize = 'small' | 'medium' | 'large';

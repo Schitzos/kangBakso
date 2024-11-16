@@ -1,6 +1,6 @@
 import theme from '@/styles/theme';
 import React from 'react';
-import {Text, StyleSheet, View, FlexAlignType} from 'react-native';
+import { Text, StyleSheet, View, FlexAlignType } from 'react-native';
 
 type IconType =
   | React.FunctionComponent<React.SVGProps<SVGSVGElement>>

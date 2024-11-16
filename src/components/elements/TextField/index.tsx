@@ -89,9 +89,9 @@ const TextField: React.FC<TextFieldProps> = ({
       <View style={[
         styles.inputContainer,
         error && styles.inputError,
-        {height: 40 * numberOfLines},
+        { height: 40 * numberOfLines },
         // eslint-disable-next-line react-native/no-inline-styles
-        {alignItems: numberOfLines === 1 ? 'center' : 'flex-start'},
+        { alignItems: numberOfLines === 1 ? 'center' : 'flex-start' },
       ]}>
         <TextInput
           ref={inputRef}

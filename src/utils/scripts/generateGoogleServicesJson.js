@@ -10,7 +10,7 @@ const fileName = 'google-services.json';
 const encodedJson = process.env.GOOGLE_SERVICES_JSON;
 
 // Ensure the directory structure exists
-fs.mkdir(rootFolder, {recursive: true}, err => {
+fs.mkdir(rootFolder, { recursive: true }, err => {
   if (err) {
     console.error('Error creating directory:', err);
     process.exit(1);
