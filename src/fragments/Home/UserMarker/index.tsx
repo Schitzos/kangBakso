@@ -46,7 +46,7 @@ export default function UserMarker() {
     <>
       <Marker
         coordinate={{ latitude: myLocation.latitude!, longitude: myLocation.longitude! }}
-        title={user?.displayName}
+        title={profile?.name}
         description={`Online ${profile?.role}`}
       >
         <View style={styles.customMarker}>

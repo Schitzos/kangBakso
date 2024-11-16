@@ -5,11 +5,17 @@ import { useLocation } from '../user/useLocation';
 import { useCallback } from 'react';
 import BackgroundJob from 'react-native-background-actions';
 import { mapFirebaseUserToUserData } from '@/utils/common';
-import authService from '@/services/auth/auth.service';
+import authService, { AuthPayload } from '@/services/auth/auth.service';
+import Config from 'react-native-config';
+import { GeoPoint } from '@react-native-firebase/firestore';
+import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
 
 export function useAuth() {
-  const { clearUser, setProfile } = useBoundStore.getState();
+  const { clearUser, setProfile, user, setLocationPermissions } = useBoundStore.getState();
   const { stopWatchingPosition } = useLocation();
+  const { getLocation } = useLocation();
+
+  // const { locationPermissions } = useAccessPermission();
 
   const onGoogleSignIn = async () => {
     try {
@@ -28,9 +34,56 @@ export function useAuth() {
     }
   };
 
+  const onLogin = async (data: any) => {
+    try {
+      const granted = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+      await setLocationPermissions(granted ? 'granted' : 'denied');
+
+      if(granted){
+        const location = await getLocation();
+        const payload = {
+          name: data.name,
+          location: new GeoPoint(location.latitude, location.longitude),
+          role: data.role,
+          isOnline: true,
+          lastOnline: Date.now(),
+          email: user?.email,
+        };
+        const dataAuth = await authService.doAauth(payload as AuthPayload);
+        const profile =  { role: dataAuth?.role, location: dataAuth?.location, name: dataAuth?.name };
+
+        useBoundStore.setState({ profile: profile });
+        return profile;
+      }else{
+        Alert.alert(
+          'Location Permission Needed',
+          `Location access is needed to find nearby Bakso ${data.role === 'Seller' ? 'Customers' : 'Vendors'}. Please enable location permissions in settings.`,
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                if (Platform.OS === 'ios') {
+                  Linking.openURL('app-settings:');  // Opens app settings on iOS
+                } else if (Platform.OS === 'android') {
+                  Linking.openSettings(); // Opens settings on Android
+                }
+              },
+            },
+          ]
+        );
+      }
+
+    } catch (error) {
+      console.log('Login Error:', error);
+      throw error;
+    }
+  };
+
   const onLogout = async () => {
     try {
-      const user = useBoundStore.getState().user;
       const payload = {
         isOnline: false,
       };
@@ -48,25 +101,21 @@ export function useAuth() {
     }
   };
 
-  const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
-    const userData = mapFirebaseUserToUserData(user);
-    if (userData) {
-      useBoundStore.getState().setUser(userData);
+  const onAuthStateChanged = async (userData: FirebaseAuthTypes.User | null) => {
+    const mappedUserData = mapFirebaseUserToUserData(userData);
+    if (mappedUserData) {
+      useBoundStore.getState().setUser(mappedUserData);
     }
   };
 
-  const setUserOffline = useCallback(async () => {
+  const setUserOffline = useCallback(async ({ isBackgroundJob = false }:{isBackgroundJob?:boolean}) => {
     const task = async () => {
-      const { user } = useBoundStore.getState();
       if(user){
         setTimeout(() => {
           authService.setOffline({ user: user, payload: { isOnline: false } });
           setProfile(null);
-        }, 1000 * 5);
+        },  1000 * Number(Config.BACKGROUND_TASK_TIMEOUT));
       }
-      console.log('Background task is running...');
-      await new Promise<void>((resolve) => setTimeout(resolve, 10000)); // Simulate a task (10 seconds)
-      console.log('Background task completed');
     };
 
     const options = {
@@ -82,13 +131,22 @@ export function useAuth() {
     };
 
     try {
-      await BackgroundJob.start(task, options);
-      console.log('Background task started');
+      if(isBackgroundJob){
+        console.log('Background task started');
+        await BackgroundJob.start(task, options);
+        await BackgroundJob.stop();
+        console.log('Background task stoped');
+      }else{
+        if(user){
+          authService.setOffline({ user: user, payload: { isOnline: false } });
+          setProfile(null);
+        }
+      }
     } catch (error) {
       console.log('Error starting background task:', error);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { onGoogleSignIn, onLogout, onAuthStateChanged, setUserOffline };
+  return { onGoogleSignIn, onLogout, onAuthStateChanged, setUserOffline, onLogin };
 }

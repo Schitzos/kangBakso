@@ -6,6 +6,7 @@ import { RootStackParamList } from './types';
 import { createStackNavigator } from '@react-navigation/stack';
 import route from './route';
 import { useBoundStore } from '@/store/store';
+import BootSplash from 'react-native-bootsplash';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -19,13 +20,17 @@ export default function Navigation() {
   };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onReady={() => {
+        BootSplash.hide();
+      }}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
           gestureEnabled: false,
         }}
-        initialRouteName={handleInitialRouter()}>
+        initialRouteName={handleInitialRouter()}
+      >
         <Stack.Screen
           name="Login"
           component={route.LoginScreen}

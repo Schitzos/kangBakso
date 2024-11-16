@@ -25,4 +25,11 @@ export const styles = StyleSheet.create({
   label: {
     // No default font weight here, it's set dynamically
   },
+  cta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ctaText: {
+    marginLeft: 8, flexWrap: 'wrap', width: '80%',
+  },
 });

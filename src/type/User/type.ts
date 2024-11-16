@@ -39,6 +39,7 @@ export type RoleType = 'Buyer' | 'Seller' | undefined;
 export type ProfileData = {
   role: RoleType;
   location: GeoPoint;
+  name: string;
 }
 
 export interface UserLocation {

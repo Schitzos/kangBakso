@@ -1,3 +1,4 @@
+import theme from '@/styles/theme';
 import { StyleSheet } from 'react-native';
 
 // Define styles
@@ -25,6 +26,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   label: {
+    fontFamily: theme.fonts.regular,
     // No default font weight here, it's set dynamically
+  },
+  disabled: {
+    backgroundColor: theme.colors.neutral100,
   },
 });

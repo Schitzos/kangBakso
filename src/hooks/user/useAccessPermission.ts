@@ -38,5 +38,18 @@ export function useAccessPermission() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { locationPermissions, requestLocationPermission };
+  const checkLocationPermission = useCallback(async () => {
+    try {
+      const granted = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+      setLocationPermissions(granted ? 'granted' : 'denied');
+      return granted;
+    } catch (error) {
+      console.warn(error);
+      setLocationPermissions('denied');
+    }
+  }, [setLocationPermissions]);
+
+  return { locationPermissions, requestLocationPermission, checkLocationPermission };
 }

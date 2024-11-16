@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginBottom: 4,
     color: theme.colors.black,
+    fontFamily: theme.fonts.regular,
   },
   requiredMark: {
     color: 'red', // Style for the required asterisk
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: theme.colors.black,
     paddingVertical: 0, // Remove vertical padding
+    fontFamily: theme.fonts.regular,
   },
   errorText: {
     color: 'red',

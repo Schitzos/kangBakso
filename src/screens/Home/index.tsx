@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 import MapView, {  PROVIDER_GOOGLE } from 'react-native-maps';
 import { useBoundStore } from '@/store/store';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +10,8 @@ import Loading from '@/components/elements/Loader';
 import { useLocation } from '@/hooks/user/useLocation';
 import theme from '@/styles/theme';
 import IconClose from '@assets/icon/icon-close.svg';
-import BottomSheet from '@gorhom/bottom-sheet';
-import TextView from '@/components/elements/TextView';
-import BottomSheetModal from '@/components/elements/BottomSheet';
+import CloseConfirmationModal from '@/fragments/Home/CloseConfirmationModal';
+import { styles } from './styles';
 
 export default function Home() {
   const { getLocation } = useLocation();
@@ -53,7 +52,7 @@ export default function Home() {
   return (
     <SafeAreaView>
       <View style={styles.mapContainer}>
-        <TouchableOpacity style={{ zIndex: isModalOpen ? -1 : 1, position: 'absolute', top: 32, right: 16, backgroundColor: theme.colors.white, borderRadius: 100, padding: 8 }} onPress={()=>setIsModalOpen(true)}>
+        <TouchableOpacity style={[styles.btnClose, isModalOpen && styles.btnHide]} onPress={()=>setIsModalOpen(true)}>
           <IconClose height={24} width={24}/>
         </TouchableOpacity>
         <MapView
@@ -73,21 +72,8 @@ export default function Home() {
         </MapView>
       </View>
       {isModalOpen &&
-      <BottomSheetModal onClose={() => setIsModalOpen(false)}>
-        <TextView>asdsd</TextView>
-      </BottomSheetModal>}
+      <CloseConfirmationModal setIsModalOpen={setIsModalOpen}/>}
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  mapContainer: {
-    width: '100%',
-    height: '100%',
-  },
-  map: {
-    flex: 1,
-    marginBottom: 1,
-    ...StyleSheet.absoluteFillObject,
-  },
-});

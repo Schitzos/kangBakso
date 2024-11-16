@@ -27,7 +27,7 @@ const colors = {
 };
 
 const fonts = {
-  regular: 'Nunito-Regular',
+  regular: 'Poppins-Regular',
   medium: 'Nunito-Medium',
   semibold: 'Nunito-SemiBold',
   bold: 'Nunito-Bold',
