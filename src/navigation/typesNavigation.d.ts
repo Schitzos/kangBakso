@@ -1,4 +1,4 @@
 declare module '@typesNavigation' {
-  import {RootStackParamList} from './src/navigation/types';
-  export type {RootStackParamList};
+  import { RootStackParamList } from './src/navigation/types';
+  export type { RootStackParamList };
 }

@@ -1,5 +1,5 @@
-import React, {Suspense, ComponentType} from 'react';
-import { View} from 'react-native';
+import React, { Suspense, ComponentType } from 'react';
+import { View } from 'react-native';
 
 const fallback = <View/>;
 /**

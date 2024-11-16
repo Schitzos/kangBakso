@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
 export default function FBAuthForm(){
-  const {onGoogleSignIn} = useAuth();
+  const { onGoogleSignIn } = useAuth();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
 
   const handleLogin = async () => {

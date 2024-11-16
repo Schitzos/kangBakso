@@ -1,4 +1,4 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 /**
  * Metro configuration
@@ -9,7 +9,7 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 const config = async () => {
   const defaultConfig = await getDefaultConfig(__dirname);
   const {
-    resolver: {sourceExts, assetExts},
+    resolver: { sourceExts, assetExts },
   } = defaultConfig;
 
   return mergeConfig(defaultConfig, {

@@ -26,7 +26,7 @@ const doAauth = async (payload: AuthPayload) => {
   }
 };
 
-const setOffline = async ({user, payload}: {user: UserData, payload: {isOnline: boolean}}) => {
+const setOffline = async ({ user, payload }: {user: UserData, payload: {isOnline: boolean}}) => {
   try{
     const userRef = firestore().collection('Users').doc(user?.email);
     await userRef.set(payload, { merge: true });

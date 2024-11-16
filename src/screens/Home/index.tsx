@@ -11,7 +11,7 @@ import { useLocation } from '@/hooks/user/useLocation';
 
 export default function Home() {
   const { getLocation } = useLocation();
-  const {user, profile} = useBoundStore((state) => state);
+  const { user, profile } = useBoundStore((state) => state);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Login'>>();
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 0,
@@ -19,7 +19,6 @@ export default function Home() {
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   });
-
 
   useEffect(() => {
     const init = async () => {
