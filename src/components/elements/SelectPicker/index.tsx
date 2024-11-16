@@ -25,10 +25,8 @@ const SelectPicker: React.FC<SelectPickerProps> = ({ options = [], selectedValue
   const [items, setItems] = useState(options);
 
   const handleValueChange = (val: string | null) => {
-    if (val) {
-      setValue(val);
-      onValueChange(val);
-    }
+    setValue(val);
+    onValueChange(val ?? '');
   };
 
   return (
@@ -46,6 +44,8 @@ const SelectPicker: React.FC<SelectPickerProps> = ({ options = [], selectedValue
         onChangeValue={handleValueChange}
         style={styles.dropdown}
         labelStyle={styles.dropdownLabel}
+        listItemLabelStyle={styles.dropdownLabelList}
+        customItemLabelStyle={styles.dropdownLabelList}
         dropDownContainerStyle={styles.dropdownItem}
         // @ts-ignore
         arrowIconStyle={{ tintColor: theme.colors.primary }}

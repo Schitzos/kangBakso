@@ -4,6 +4,7 @@ import { RootStackParamList } from '@/navigation/types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
+import GoogleIcon from '@assets/icon/icon-google.svg';
 
 export default function FBAuthForm(){
   const { onGoogleSignIn } = useAuth();
@@ -15,6 +16,6 @@ export default function FBAuthForm(){
   };
 
   return(
-    <Button label="Google Sign in" onPress={()=>handleLogin()} size="large"/>
+    <Button label="Google Sign in" onPress={()=>handleLogin()} size="large" leftIcon={GoogleIcon}/>
   );
 }

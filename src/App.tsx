@@ -22,7 +22,7 @@ function App(): React.JSX.Element {
   }, [onAuthStateChanged]);
 
   useAppState((nextAppState) => {
-    setUserOffline();
+    setUserOffline({ isBackgroundJob: true });
     setAppState(nextAppState);
   });
 

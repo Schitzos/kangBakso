@@ -126,5 +126,6 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
     marginBottom: 0,
     width: 'auto',
+    fontFamily: theme.fonts.regular,
   },
 });

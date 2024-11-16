@@ -17,7 +17,7 @@ export interface UserSlice {
   setLocationPermissions: (permissions: LocationPermissionStatus) => void;
 }
 
-type LocationPermissionStatus = 'granted' | 'denied' | 'pending';
+export type LocationPermissionStatus = 'granted' | 'denied' | 'pending';
 
 // Create the user slice
 export const createUserSlice: StateCreator<UserSlice> = (set) => {

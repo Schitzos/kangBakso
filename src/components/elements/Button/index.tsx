@@ -78,6 +78,7 @@ const Button: React.FC<CustomButtonProps> = ({
         heightStyles[size], // Apply height based on size
         { backgroundColor: buttonColor, width }, // Apply the width prop
         style,
+        disabled && styles.disabled,
       ]}
       onPress={onPress}
       disabled={disabled}

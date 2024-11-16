@@ -9,7 +9,6 @@ import TextView from '@/components/elements/TextView';
 
 export default function Login(){
   const user = useBoundStore((state) => state.user);
-
   return(
     <>
       <SafeAreaView/>

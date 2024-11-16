@@ -19,12 +19,16 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     zIndex: 0,
+    fontFamily: theme.fonts.regular,
   },
   dropdownItem: {
     borderWidth: 1,
     borderTopWidth: 0,
     zIndex: 1000,
     borderColor: theme.colors.borderColor,
+  },
+  dropdownLabelList: {
+    fontFamily: theme.fonts.regular,
   },
   dropdownArrow: {
     tintColor: theme.colors.primary,
