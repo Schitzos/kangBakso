@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Controller, useForm } from 'react-hook-form';
 import TextField from '@/components/elements/TextField';
@@ -15,7 +14,7 @@ import TextView from '@/components/elements/TextView';
 import { StackNavigationProp } from '@react-navigation/stack';
 import theme from '@/styles/theme';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
-import { Alert, Linking, Platform } from 'react-native';
+import { Alert, Linking, Platform, View } from 'react-native';
 import { styles } from './styles';
 import { useAuth } from '@/hooks/auth/useAuth';
 
