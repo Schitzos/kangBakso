@@ -6,8 +6,8 @@ import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 import { useLocation } from '@/hooks/user/useLocation';
 import userService from '@/services/user/user.service';
 import { UserLocation } from '@/type/User/type';
-import IconBuyer from '@assets/Icon-buyer.svg';
-import IconSeller from '@assets/Icon-seller.svg';
+import IconBuyer from '@assets/icon/Icon-buyer.svg';
+import IconSeller from '@assets/icon/Icon-seller.svg';
 import { StyleSheet, View } from 'react-native';
 import TextView from '@/components/elements/TextView';
 

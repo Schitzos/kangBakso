@@ -16,6 +16,7 @@
     "kill": "watchman watch-del-all"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.0.5",
     "@hookform/resolvers": "^3.9.0",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-firebase/app": "^21.3.0",
