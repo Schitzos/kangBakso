@@ -17,9 +17,9 @@ interface TextFieldProps {
 }
 
 /**
- * Format a string value as a number with a dot (.) separator.
- * @param {string} value The string value to be formatted.
- * @returns {string} The formatted string value.
+ * Formats a given string as a number with dots as thousand separators.
+ * @param {string} value The string to be formatted.
+ * @returns {string} The formatted string.
  */
 const formatNumber = (value: string) => {
   const numericValue = value.replace(/\D/g, ''); // Remove non-digit characters
@@ -43,6 +43,7 @@ const formatNumber = (value: string) => {
  * @prop {string} error - The error message to display below the text field.
  * @prop {boolean} requiredMark - Whether to display an asterisk (*) next to the label. Defaults to false.
  * @prop {number} numberOfLines - The number of lines for the text field. Defaults to 1.
+ * @prop {boolean} disabled - disabled
  */
 const TextField: React.FC<TextFieldProps> = ({
   label,
@@ -78,6 +79,16 @@ const TextField: React.FC<TextFieldProps> = ({
     onChangeText(formattedValue);
   };
 
+  const keyboardType = (keyType:string)=>{
+    if(keyType === 'email'){
+      return 'email-address';
+    }else if (keyType === 'number'){
+      return 'numeric';
+    }else{
+      return 'default';
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       {label && (
@@ -102,7 +113,7 @@ const TextField: React.FC<TextFieldProps> = ({
           onChangeText={handleChange} // Call handleChange on text change
           placeholder={placeholder}
           placeholderTextColor="#999"
-          keyboardType={type === 'email' ? 'email-address' : type === 'number' ? 'numeric' : 'default'}
+          keyboardType={keyboardType(type)}
           autoCapitalize={type === 'email' ? 'none' : 'sentences'}
           textAlignVertical="center" // Vertically center the text
           readOnly={disabled}
