@@ -39,8 +39,7 @@ export function useAuth() {
       const granted = await PermissionsAndroid.check(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       );
-      await setLocationPermissions(granted ? 'granted' : 'denied');
-
+      setLocationPermissions(granted ? 'granted' : 'denied');
       if(granted){
         const location = await getLocation();
         const payload = {
@@ -75,7 +74,6 @@ export function useAuth() {
           ]
         );
       }
-
     } catch (error) {
       console.log('Login Error:', error);
       throw error;

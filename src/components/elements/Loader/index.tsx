@@ -17,7 +17,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: for a slight overlay effect
+    backgroundColor: 'transparent',
+    padding: 16,
+    minHeight: 72,
+    gap: 8,
   },
 });
 

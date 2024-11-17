@@ -7,6 +7,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import { useAuth } from './hooks/auth/useAuth';
 import useAppState from './hooks/appState/useAppState';
+import ContextProvider from './context';
+import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   webClientId: Config.WEB_CLIENT_ID,
@@ -28,7 +30,10 @@ function App(): React.JSX.Element {
 
   return (
     <GestureHandlerRootView>
-      <Navigation />
+      <ContextProvider>
+        <Navigation />
+        <Toast />
+      </ContextProvider>
     </GestureHandlerRootView>
   );
 }

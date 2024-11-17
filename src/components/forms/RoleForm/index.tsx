@@ -15,6 +15,8 @@ import { styles } from './styles';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchemaValidation } from './validation';
+import { FirebaseMutation } from '@/utils/adapters/tanstackAdapter';
+import Loading from '@/components/elements/Loader';
 
 export interface FormDataLogin {
     name: string;
@@ -22,34 +24,35 @@ export interface FormDataLogin {
 }
 
 export default function RoleForm(){
-  const { user } = useBoundStore((state) => state);
+  const { user, profile } = useBoundStore((state) => state);
   const { onLogout, onLogin } = useAuth();
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
     defaultValues: {
-      name: user?.displayName ?? '',
+      name: profile?.name ?? '',
       role: '',
     },
     mode: 'onSubmit',
     resolver: yupResolver(signInSchemaValidation),
   });
 
-  const onSubmit = async (data: FormDataLogin) => {
-    try {
-      await onLogin(data).then(async (res)=>{
-        res && navigation.navigate('Home');
-      });
-    } catch (error) {
-      console.error('Error in onSubmit:', error);
-    }
-  };
+  const handlelogin = FirebaseMutation({
+    options: onLogin,
+    callback: () => navigation.navigate('Home'),
+  });
 
-  const handleSignOut = async () => {
-    await onLogout();
-    navigation.navigate('Login', { refresh: true });
-  };
+  const handleLogout = FirebaseMutation({
+    options: onLogout,
+    callback: () => navigation.navigate('Login', { refresh: true }),
+  });
+
+  if(handlelogin.isPending || handleLogout.isPending){
+    return (
+      <Loading/>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -99,12 +102,12 @@ export default function RoleForm(){
       </View>
       <Button
         label="Join"
-        onPress={handleSubmit(onSubmit)}
+        onPress={handleSubmit((data)=>handlelogin.mutate(data))}
         size="large"
         fontWeight="400"
         disabled={!isChecked || Object.keys(errors).length > 0}
       />
-      {user && <Button label="Sign Out" onPress={handleSignOut} size="large" fontWeight="400" />}
+      {user && <Button label="Sign Out" onPress={()=>handleLogout.mutate(null)} size="large" fontWeight="400" />}
     </View>
   );
 }
