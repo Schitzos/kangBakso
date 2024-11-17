@@ -10,13 +10,14 @@ import SelectPicker from '@/components/elements/SelectPicker';
 import TextView from '@/components/elements/TextView';
 import { StackNavigationProp } from '@react-navigation/stack';
 import theme from '@/styles/theme';
-import { View } from 'react-native';
+import { Alert, Linking, Platform, View } from 'react-native';
 import { styles } from './styles';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchemaValidation } from './validation';
 import { FirebaseMutation } from '@/utils/adapters/tanstackAdapter';
 import Loading from '@/components/elements/Loader';
+import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 
 export interface FormDataLogin {
     name: string;
@@ -26,6 +27,7 @@ export interface FormDataLogin {
 export default function RoleForm(){
   const { user, profile } = useBoundStore((state) => state);
   const { onLogout, onLogin } = useAuth();
+  const  { requestLocationPermission, checkLocationPermission } = useAccessPermission();
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
 
@@ -47,6 +49,36 @@ export default function RoleForm(){
     options: onLogout,
     callback: () => navigation.navigate('Login', { refresh: true }),
   });
+
+  const checkLogin = async (data:FormDataLogin) => {
+    const granted = await checkLocationPermission();
+    if(!granted){
+      const isAllow = await requestLocationPermission();
+      if(isAllow === 'granted'){
+        checkLogin(data);
+      }else{
+        Alert.alert(
+          'Location Permission Needed',
+          `Location access is needed to find nearby Bakso ${data.role === 'Seller' ? 'Customers' : 'Vendors'}. Please enable location permissions in settings.`,
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                if (Platform.OS === 'ios') {
+                  Linking.openURL('app-settings:');  // Opens app settings on iOS
+                } else if (Platform.OS === 'android') {
+                  Linking.openSettings(); // Opens settings on Android
+                }
+              },
+            },
+          ]
+        );
+      }
+    }else{
+      handlelogin.mutate(data);
+    }
+  };
 
   if(handlelogin.isPending || handleLogout.isPending){
     return (
@@ -102,7 +134,7 @@ export default function RoleForm(){
       </View>
       <Button
         label="Join"
-        onPress={handleSubmit((data)=>handlelogin.mutate(data))}
+        onPress={handleSubmit((data)=>checkLogin(data))}
         size="large"
         fontWeight="400"
         disabled={!isChecked || Object.keys(errors).length > 0}

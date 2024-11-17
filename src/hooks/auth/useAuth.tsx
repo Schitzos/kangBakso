@@ -2,20 +2,19 @@ import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/goo
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useBoundStore } from '@/store/store';
 import { useLocation } from '../user/useLocation';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import BackgroundJob from 'react-native-background-actions';
 import { mapFirebaseUserToUserData } from '@/utils/common';
 import authService, { AuthPayload } from '@/services/auth/auth.service';
 import Config from 'react-native-config';
 import { GeoPoint } from '@react-native-firebase/firestore';
-import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
 
 export function useAuth() {
-  const { clearUser, setProfile, user, setLocationPermissions } = useBoundStore.getState();
+  const { clearUser, setProfile, user } = useBoundStore.getState();
   const { stopWatchingPosition } = useLocation();
   const { getLocation } = useLocation();
-
-  // const { locationPermissions } = useAccessPermission();
+  let timerId: NodeJS.Timeout | null = null; // Reference for the timer
 
   const onGoogleSignIn = async () => {
     try {
@@ -36,44 +35,21 @@ export function useAuth() {
 
   const onLogin = async (data: any) => {
     try {
-      const granted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-      setLocationPermissions(granted ? 'granted' : 'denied');
-      if(granted){
-        const location = await getLocation();
-        const payload = {
-          name: data.name,
-          location: new GeoPoint(location.latitude, location.longitude),
-          role: data.role,
-          isOnline: true,
-          lastOnline: Date.now(),
-          email: user?.email,
-        };
-        const dataAuth = await authService.doAauth(payload as AuthPayload);
-        const profile =  { role: dataAuth?.role, location: dataAuth?.location, name: dataAuth?.name };
+      const location = await getLocation();
+      const payload = {
+        name: data.name,
+        location: new GeoPoint(location.latitude, location.longitude),
+        role: data.role,
+        isOnline: true,
+        lastOnline: Date.now(),
+        email: user?.email,
+      };
+      const dataAuth = await authService.doAauth(payload as AuthPayload);
+      const profile =  { role: dataAuth?.role, location: dataAuth?.location, name: dataAuth?.name };
 
-        useBoundStore.setState({ profile: profile });
-        return profile;
-      }else{
-        Alert.alert(
-          'Location Permission Needed',
-          `Location access is needed to find nearby Bakso ${data.role === 'Seller' ? 'Customers' : 'Vendors'}. Please enable location permissions in settings.`,
-          [
-            { text: 'Cancel', style: 'cancel' },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                if (Platform.OS === 'ios') {
-                  Linking.openURL('app-settings:');  // Opens app settings on iOS
-                } else if (Platform.OS === 'android') {
-                  Linking.openSettings(); // Opens settings on Android
-                }
-              },
-            },
-          ]
-        );
-      }
+      useBoundStore.setState({ profile: profile });
+      return profile;
+
     } catch (error) {
       console.log('Login Error:', error);
       throw error;
@@ -106,45 +82,79 @@ export function useAuth() {
     }
   };
 
-  const setUserOffline = useCallback(async ({ isBackgroundJob = false }:{isBackgroundJob?:boolean}) => {
-    const task = async () => {
-      if(user){
-        setTimeout(() => {
-          authService.setOffline({ user: user, payload: { isOnline: false } });
-          setProfile(null);
-        },  1000 * Number(Config.BACKGROUND_TASK_TIMEOUT));
-      }
-    };
+  const setUserOffline = useCallback(//make function background service
+    async ({ isBackgroundJob = false }: { isBackgroundJob?: boolean }) => {
+      const options = {
+        taskName: 'BackgroundSync',
+        taskTitle: 'Syncing Data',
+        taskDesc: 'Syncing your app data in the background',
+        taskIcon: {
+          name: 'ic_launcher',
+          type: 'mipmap',
+        },
+        taskTimeout: 1000 * 60 * 15, // 15 minutes
+        forceAllow: true,
+      };
 
-    const options = {
-      taskName: 'BackgroundSync', // Use a fixed task name for now
-      taskTitle: 'Syncing Data',
-      taskDesc: 'Syncing your app data in the background',
-      taskIcon: {
-        name: 'ic_launcher',
-        type: 'mipmap',
-      },
-      taskTimeout: 1000 * 60 * 15, // 15 minutes
-      forceAllow: true,
-    };
-
-    try {
-      if(isBackgroundJob){
-        console.log('Background task started');
-        await BackgroundJob.start(task, options);
-        await BackgroundJob.stop();
-        console.log('Background task stoped');
-      }else{
-        if(user){
-          authService.setOffline({ user: user, payload: { isOnline: false } });
-          setProfile(null);
+      try {
+        if (isBackgroundJob) {
+          console.log('Starting background job...');
+          await BackgroundJob.start(setOfflineFromBackground, options);
+        } else {
+          if (timerId) {
+            clearTimeout(timerId); // Clear the timer when stopping the job
+          }
+          if (user) {
+            await BackgroundJob.stop();
+            console.log('Background job stopped');
+            authService.setOffline({ user, payload: { isOnline: false } });
+            setProfile(null);
+          }
         }
+      } catch (error) {
+        console.log('Error managing background task:', error);
       }
-    } catch (error) {
-      console.log('Error starting background task:', error);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user]
+  );
+
+  const setOfflineFromBackground = async () => {
+    if (user) {
+      console.log('Running background task for setting user offline...');
+      const delay = 1000 * Number(Config.BACKGROUND_TASK_TIMEOUT);
+
+      await new Promise((resolve) => {
+        timerId = setTimeout(async () => {
+          console.log('Timeout reached, setting user offline...');
+          if(AppState.currentState !== 'active'){
+            await authService.setOffline({ user, payload: { isOnline: false } });
+            setProfile(null);
+            console.log('User set to offline in background.');
+            await BackgroundJob.stop(); // Stop the background job when complete
+            resolve(true); // Ensure the task completes
+          }
+        }, delay);
+      });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        console.log('App is now in foreground, canceling timer...');
+        if (timerId) {
+          clearTimeout(timerId); // Cancel the timer if app is in foreground
+        }
+        BackgroundJob.stop().catch((error) => {
+          console.log('Error stopping background job on foreground:', error);
+        });
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+  }, [timerId]);
 
   return { onGoogleSignIn, onLogout, onAuthStateChanged, setUserOffline, onLogin };
 }
