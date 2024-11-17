@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import React, { useEffect } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
 import Navigation from '@/navigation';
@@ -16,16 +15,14 @@ GoogleSignin.configure({
 
 function App(): React.JSX.Element {
   const { onAuthStateChanged, setUserOffline } = useAuth();
-  const [, setAppState] = useState<AppStateStatus>(AppState.currentState);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, [onAuthStateChanged]);
 
-  useAppState((nextAppState) => {
+  useAppState(() => {
     setUserOffline({ isBackgroundJob: true });
-    setAppState(nextAppState);
   });
 
   return (
