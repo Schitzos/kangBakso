@@ -27,5 +27,6 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.white,
     borderRadius: 16,
     padding: 16,
+    minHeight: 106,
   },
 });
