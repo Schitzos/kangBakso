@@ -20,8 +20,8 @@ import Loading from '@/components/elements/Loader';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 
 export interface FormDataLogin {
-    name: string;
-    role: string;
+  name: string;
+  role: string;
 }
 
 export default function RoleForm(){
@@ -143,3 +143,4 @@ export default function RoleForm(){
     </View>
   );
 }
+

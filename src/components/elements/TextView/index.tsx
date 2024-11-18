@@ -1,6 +1,7 @@
 import theme from '@/styles/theme';
 import React from 'react';
-import { Text, StyleSheet, View, FlexAlignType } from 'react-native';
+import { Text, View, FlexAlignType } from 'react-native';
+import { styles } from './styles';
 
 type IconType =
   | React.FunctionComponent<React.SVGProps<SVGSVGElement>>
@@ -42,6 +43,22 @@ interface TextViewProps {
   lineHeight?: number;
 }
 
+/**
+ * A customizable text component with features such as:
+ * - alignment (left, center, right)
+ * - font size
+ * - font weight (normal, bold, 100-900)
+ * - color
+ * - margin bottom
+ * - left and right icon placement
+ * - text transform (none, capitalize, uppercase, lowercase)
+ * - font family selection (regular, medium, bold, semiBold)
+ * - custom styles
+ * - line height
+ *
+ * @param {{children: React.ReactNode, align?: 'flex-start' | 'flex-end' | 'center', fz?: number, fw?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900', color?: string, mb?: number, leftIcon?: {icon: IconType, color?: string, width?: string, height?: string}, rightIcon?: {icon: IconType, color?: string, width?: string, height?: string}, textTransform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase', font?: 'regular' | 'medium' | 'bold' | 'semiBold', style?: object, lineHeight?: number}} props
+ * @returns {React.ReactElement}
+ */
 export default function TextView({
   children,
   align = 'flex-start',
@@ -114,18 +131,3 @@ export default function TextView({
   );
 }
 
-const styles = StyleSheet.create({
-  view: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 12,
-    color: theme.colors.black,
-    marginBottom: 0,
-    width: 'auto',
-    fontFamily: theme.fonts.regular,
-  },
-});

@@ -1,6 +1,7 @@
 import { UserData } from '@/type/User/type';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-
+import { Alert } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 export function mapFirebaseUserToUserData(user: FirebaseAuthTypes.User | null): UserData | null {
   if (!user) {return null;}
 
@@ -28,4 +29,18 @@ export function mapFirebaseUserToUserData(user: FirebaseAuthTypes.User | null): 
     tenantId: null,
     uid: user.uid,
   };
+}
+
+// NetInfoListener.js
+
+export function setupNetInfoListener() {
+  return NetInfo.addEventListener(networkState => {
+    if (!networkState.isConnected) {
+      Alert.alert(
+        'No Internet Connection',
+        'Please check your internet connection and try again.',
+        [{ text: 'OK', onPress: () => console.log('asd') }],
+      );
+    }
+  });
 }

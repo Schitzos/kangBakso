@@ -15,6 +15,8 @@ export interface BottomSheetModalProps {
   snapPoints?: string[];
   children: React.ReactNode;
   onClose: () => void;
+  enablePanDownToClose?: boolean;
+  pressBehavior?: 'none' | 'close' | 'close-all';
 }
 
 /**
@@ -40,7 +42,7 @@ export interface BottomSheetModalProps {
  * The component has been configured to use `react-native-reanimated` in a non-strict mode,
  * which means that Reanimated will not throw an error if there is a layout animation in progress.
  */
-export default function BottomSheetModal({ snapPoints = ['25%', '50%', '75%'], children, onClose }: Readonly<BottomSheetModalProps>) {
+export default function BottomSheetModal({ snapPoints = ['25%', '50%', '75%'], children, onClose, enablePanDownToClose = true, pressBehavior = 'close' }: Readonly<BottomSheetModalProps>) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const renderBackdrop = useCallback((props:any) => (
     <BottomSheetBackdrop
@@ -48,7 +50,9 @@ export default function BottomSheetModal({ snapPoints = ['25%', '50%', '75%'], c
       disappearsOnIndex={-1}  // Backdrop disappears when the bottom sheet is fully hidden
       appearsOnIndex={0}  // Backdrop appears when the bottom sheet opens
       opacity={0.7}       // Adjust this value to control the darkness (0 is fully transparent, 1 is fully opaque)
+      pressBehavior={pressBehavior}
     />
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   ), []);
 
   return (
@@ -59,7 +63,7 @@ export default function BottomSheetModal({ snapPoints = ['25%', '50%', '75%'], c
       backdropComponent={renderBackdrop}
       enableDynamicSizing={false}
       onClose={() => onClose()}
-      enablePanDownToClose
+      enablePanDownToClose={enablePanDownToClose}
       style={styles.container}
     >
       <BottomSheetScrollView style={styles.content} showsVerticalScrollIndicator={false}>

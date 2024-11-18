@@ -8,8 +8,9 @@ import userService from '@/services/user/user.service';
 import { UserLocation } from '@/type/User/type';
 import IconBuyer from '@assets/icon/Icon-buyer.svg';
 import IconSeller from '@assets/icon/Icon-seller.svg';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import TextView from '@/components/elements/TextView';
+import { styles } from './styles';
 
 export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
@@ -73,28 +74,3 @@ export default function UserMarker() {
   );
 }
 
-const styles = StyleSheet.create({
-  customMarker: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 2,
-    width: 300,
-    position: 'relative',
-    bottom: -6,
-  },
-  labelMarker: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 4,
-    backgroundColor: 'white',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: 'black',
-    position: 'absolute',
-    left: 170,
-    zIndex: 1000,
-  },
-});

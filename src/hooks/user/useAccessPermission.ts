@@ -38,14 +38,26 @@ export function useAccessPermission() {
 
   const checkLocationPermission = useCallback(async () => {
     try {
-      const granted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-      setLocationPermissions(granted ? 'granted' : 'denied');
-      return granted;
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        );
+        setLocationPermissions(granted ? 'granted' : 'denied');
+        return granted;
+      } else {
+        const authStatus = await Geolocation.requestAuthorization('whenInUse');
+        if (authStatus === 'granted') {
+          setLocationPermissions('granted');
+          return true;
+        } else {
+          setLocationPermissions('denied');
+          return false;
+        }
+      }
     } catch (error) {
       console.warn(error);
       setLocationPermissions('denied');
+      return false;
     }
   }, [setLocationPermissions]);
 

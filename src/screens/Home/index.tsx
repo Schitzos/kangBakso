@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import MapView, {  PROVIDER_GOOGLE } from 'react-native-maps';
-import { useBoundStore } from '@/store/store';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@/navigation/types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BackHandler, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import UserMarker from '@/fragments/Home/UserMarker';
-import Loading from '@/components/elements/Loader';
+
+import { useBoundStore } from '@/store/store';
 import { useLocation } from '@/hooks/user/useLocation';
+import { RootStackParamList } from '@/navigation/types';
+
+import UserMarker from '@/fragments/Home/UserMarker';
+import CloseConfirmationModal from '@/fragments/Home/CloseConfirmationModal';
+import Loading from '@/components/elements/Loader';
+
 import theme from '@/styles/theme';
 import IconClose from '@assets/icon/icon-close.svg';
-import CloseConfirmationModal from '@/fragments/Home/CloseConfirmationModal';
+
 import { styles } from './styles';
 
 export default function Home() {
-  const { getLocation } = useLocation();
   const { user, profile } = useBoundStore((state) => state);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const doubleBackToExitPressedOnce = useRef(false);
+  const { getLocation } = useLocation();
+
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Login'>>();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -45,6 +52,30 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, user]);
 
+  const handleHardwareBackPress = useCallback(() => {
+    if (doubleBackToExitPressedOnce.current) {
+      setIsModalOpen(true);
+      return true;
+    }
+    doubleBackToExitPressedOnce.current = true;
+    setTimeout(() => {
+      doubleBackToExitPressedOnce.current = false;
+    }, 2000);
+    return true;
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleHardwareBackPress
+      );
+      return () => {
+        backHandler.remove();
+      };
+    }, [handleHardwareBackPress])
+  );
+
   if(defaultLocation.latitude === 0 && defaultLocation.longitude === 0) {
     return <Loading/>;
   }
@@ -52,28 +83,30 @@ export default function Home() {
   return (
     <SafeAreaView>
       <View style={styles.mapContainer}>
-        <TouchableOpacity style={[styles.btnClose, isModalOpen && styles.btnHide]} onPress={()=>setIsModalOpen(true)}>
-          <IconClose height={24} width={24}/>
+        <TouchableOpacity
+          style={[styles.btnClose, isModalOpen && styles.btnHide]}
+          onPress={() => setIsModalOpen(true)}
+        >
+          <IconClose height={24} width={24} />
         </TouchableOpacity>
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           region={defaultLocation}
-          zoomEnabled={true}
-          zoomControlEnabled={true}
+          zoomEnabled
+          zoomControlEnabled
           followsUserLocation={false}
-          loadingEnabled={true}
+          loadingEnabled
           loadingIndicatorColor={theme.colors.primary}
           loadingBackgroundColor={theme.colors.neutral}
-          showsMyLocationButton={true}
-          showsCompass={true}
+          showsMyLocationButton
+          showsCompass
         >
-          <UserMarker/>
+          <UserMarker />
         </MapView>
       </View>
-      {isModalOpen &&
-      <CloseConfirmationModal setIsModalOpen={setIsModalOpen}/>}
+
+      {isModalOpen && <CloseConfirmationModal setIsModalOpen={setIsModalOpen} />}
     </SafeAreaView>
   );
 }
-
