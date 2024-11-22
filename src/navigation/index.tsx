@@ -39,10 +39,6 @@ export default function Navigation() {
           name="Home"
           component={route.HomeScreen}
         />
-        <Stack.Screen
-          name="Offline"
-          component={route.OfflineScreen}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );

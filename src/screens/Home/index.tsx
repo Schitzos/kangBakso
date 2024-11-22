@@ -8,8 +8,8 @@ import { useBoundStore } from '@/store/store';
 import { useLocation } from '@/hooks/user/useLocation';
 import { RootStackParamList } from '@/navigation/types';
 
-import UserMarker from '@/fragments/Home/UserMarker';
-import CloseConfirmationModal from '@/fragments/Home/CloseConfirmationModal';
+import UserMarker from '@/screens/Home/fragments/UserMarker';
+import CloseConfirmationModal from '@/screens/Home/fragments/CloseConfirmationModal';
 import Loading from '@/components/elements/Loader';
 
 import theme from '@/styles/theme';
