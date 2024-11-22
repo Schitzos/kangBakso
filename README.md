@@ -1,10 +1,11 @@
 # Project Setup Guide
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Schitzos_kangBakso)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Schitzos_kangBakso&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Schitzos_kangBakso)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=Schitzos_kangBakso)
 
- 
+
 ## Introduction
 
-This guide will walk you through the steps to set up and run the project. The project is built using React Native v0.73.2 and requires Node.js version 18 or above, as well as Java version 17.
+This guide will walk you through the steps to set up and run the project. The project is built using React Native v0.75.4 and requires Node.js version 18 or above, as well as Java version 17.
 
 ## Prerequisites
 
@@ -58,4 +59,4 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-# Have fun to pick pokemon and feed them till it evolve !!
+# Have fun find your customers and bakso vendors!!
