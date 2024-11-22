@@ -40,7 +40,7 @@ function Offline(): React.JSX.Element {
             Network Offline
           </TextView>
           <View style={styles.imageContainer}>
-            <Image source={require('@assets/logo/offline.png')} style={styles.image} resizeMode="cover"/>
+            <Image source={require('../../../assets/logo/offline.png')} style={styles.image} resizeMode="cover"/>
           </View>
           <TextView align="center">This application is depends on network so please make sure your network is connected</TextView>
         </View>

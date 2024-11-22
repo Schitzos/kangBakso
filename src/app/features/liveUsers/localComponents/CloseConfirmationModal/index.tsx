@@ -7,7 +7,7 @@ import TextView from '@/app/components/elements/TextView';
 import Button from '@/app/components/elements/Button';
 import theme from '@/app/styles/theme';
 import { useBoundStore } from '@/app/stateManagement/store';
-import useLoginViewModel from '../../viewModel/useLoginViewModel';
+import useLoginViewModel from '../../../login/viewModel/useLoginViewModel';
 import { CloseConfirmationModalProps } from '@/core/domains/liveUser/entities/ModalConfirmation';
 
 export default function CloseConfirmationModal({ setIsModalOpen }: Readonly<CloseConfirmationModalProps>) {

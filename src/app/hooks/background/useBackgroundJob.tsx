@@ -2,11 +2,12 @@ import { useCallback, useEffect, useRef } from 'react';
 import BackgroundJob from 'react-native-background-actions';
 import { AppState, AppStateStatus } from 'react-native';
 import Config from 'react-native-config';
-import authService from '@/services/auth/auth.service';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useBoundStore } from '@/app/stateManagement/store';
+import AuthUseCase from '@/core/domains/auth/useCases/AuthCase';
 
 export function useBackgroundJob() {
+  const authUseCase = AuthUseCase();
   let timerId = useRef<NodeJS.Timeout | null>(null);
   const { setProfile, user } = useBoundStore.getState();
 
@@ -35,7 +36,7 @@ export function useBackgroundJob() {
           if (user) {
             await BackgroundJob.stop();
             console.log('Background job stopped');
-            authService.setOffline({ user, payload: { isOnline: false } });
+            authUseCase.setUserOffline();
             setProfile(null);
           }
         }
@@ -58,7 +59,7 @@ export function useBackgroundJob() {
         timerId.current = setTimeout(async () => {
           console.log('Timeout reached, setting user offline...');
           if(AppState.currentState !== 'active'){
-            await authService.setOffline({ user, payload: { isOnline: false } });
+            await authUseCase.setUserOffline();
             setProfile(null);
             console.log('User set to offline in background.');
             await BackgroundJob.stop(); // Stop the background job when complete

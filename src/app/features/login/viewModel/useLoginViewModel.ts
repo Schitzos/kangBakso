@@ -1,15 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useLocation } from '@/app/hooks/user/useLocation';
+import { useLocation } from '@/app/hooks/access/useLocation';
 import { useBoundStore } from '@/app/stateManagement/store';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchemaValidation } from '@/app/components/forms/RoleForm/validation';
 import { FirebaseMutation } from '@/infrastructure/network/tanstackAdapter';
-import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
+import { useAccessPermission } from '@/app/hooks/access/useAccessPermission';
 import { useState } from 'react';
 import { FormDataLogin } from '@/core/domains/auth/entities/LoginAuth';
-import { RootStackParamList } from '@/core/domains/routesStack/entities/routes';
+import { RootStackParamList } from '@/app/navigation/type';
 import AuthCase from '@/core/domains/auth/useCases/AuthCase';
 import { GeoPoint } from '@react-native-firebase/firestore';
 

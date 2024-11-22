@@ -6,7 +6,7 @@ import { styles } from './styles';
 import Loading from '@/app/components/elements/Loader';
 import theme from '@/app/styles/theme';
 import UserMarker from '@/app/features/liveUsers/localComponents/UserMarker';
-import CloseConfirmationModal from '@/app/features/login/localComponents/CloseConfirmationModal';
+import CloseConfirmationModal from '@/app/features/liveUsers/localComponents/CloseConfirmationModal';
 import useLiveUserModel from '../../viewModel/useLiveUserModel';
 
 export default function LiveUser() {

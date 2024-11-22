@@ -1,5 +1,5 @@
-import userService from '@/services/user/user.service';
-import { UserData } from '@/type/User/type';
+import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import LiveUserUseCase from '@/core/domains/liveUser/useCases/LiveUserUseCase';
 import { useRef } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 
@@ -12,6 +12,7 @@ interface LocationData {
 export function useLocation() {
   let watchId: number | null = null;
   const userLocationRef = useRef<{ latitude: number; longitude: number }>({ latitude: 0, longitude: 0 });
+  const liveUserUseCase = LiveUserUseCase();
 
   const getLocation = async (): Promise<LocationData> => {
     return new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ export function useLocation() {
         );
 
         if (moved) {
-          userService.updateLocationInFirestore(latitude, longitude, user);
+          liveUserUseCase.updateLocationInFirestore(latitude, longitude, user);
           userLocationRef.current = { latitude, longitude };
           setLocation({ latitude, longitude });
           return { latitude, longitude };

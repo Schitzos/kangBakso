@@ -60,7 +60,7 @@ export function useAccessPermission() {
     } catch (error) {
       crashlytics().log(`Error ${error as Error}`);
       crashlytics().recordError(error as Error);
-      console.warn(error);
+      console.warn('ini', error);
       setLocationPermissions('denied');
       return false;
     }

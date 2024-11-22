@@ -6,7 +6,7 @@ import { Alert, Linking, Platform } from 'react-native';
 import { FirebaseAuthMapper } from '../mapper/FirebaseAuthMapper';
 import { FormDataLogin } from '../../entities/LoginAuth';
 import { AuthPayload } from '../../entities/FirebaseAuth';
-import authService from '../services/auth/auth.service';
+import firestore from '@react-native-firebase/firestore';
 
 const AuthImplementation = () => {
   const OnGoogleSignIn = async () => {
@@ -39,10 +39,15 @@ const AuthImplementation = () => {
     payload:AuthPayload
   ) => {
     try {
-      const dataAuth = await authService.doAauth(payload as AuthPayload);
-      if (!dataAuth) {throw new Error('Authentication failed.');}
+      const userRef = firestore().collection('Users').doc(payload.email!);
+      await userRef.set(payload, { merge: true });
 
-      const modProfile = { role: dataAuth.role, location: dataAuth.location, name: dataAuth.name };
+      const updatedDoc = await userRef.get();
+      const updatedData = updatedDoc.data();
+
+      if (!updatedData) {throw new Error('Authentication failed.');}
+
+      const modProfile = { role: updatedData.role, location: updatedData.location, name: updatedData.name };
       useBoundStore.setState({ profile: modProfile });
 
       return modProfile;
@@ -58,10 +63,9 @@ const AuthImplementation = () => {
   const OnLogout = async (stopWatchingPosition: () => void) => {
     const { clearUser, setProfile, user } = useBoundStore.getState();
     try {
-      const payload = { isOnline: false };
 
       if (user) {
-        await authService.setOffline({ user, payload });
+        await SetUserOffline();
       }
 
       clearUser();
@@ -80,10 +84,12 @@ const AuthImplementation = () => {
     }
   };
 
-  const SetUserOffline = async (callback:()=>void)=>{
+  const SetUserOffline = async (callback?:()=>void)=>{
     const { setProfile, user } = useBoundStore.getState();
     if(user){
-      await authService.setOffline({ user, payload: { isOnline: false } });
+      const payload = { isOnline: false };
+      const userRef = firestore().collection('Users').doc(user?.email);
+      await userRef.set(payload, { merge: true });
       setProfile(null);
       callback && callback();
     }

@@ -1,8 +1,7 @@
-import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
-import { useLocation } from '@/app/hooks/user/useLocation';
+import { useAccessPermission } from '@/app/hooks/access/useAccessPermission';
+import { useLocation } from '@/app/hooks/access/useLocation';
 import { useBoundStore } from '@/app/stateManagement/store';
-import { RootStackParamList } from '@/core/domains/routesStack/entities/routes';
-import userService from '@/services/user/user.service';
+import { RootStackParamList } from '@/app/navigation/type';
 import { UserLocation } from '@/type/User/type';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -10,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { AnimatedRegion } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
+import LiveUserUseCase from '@/core/domains/liveUser/useCases/LiveUserUseCase';
 
 const useLiveUserModel = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
@@ -26,6 +26,7 @@ const useLiveUserModel = () => {
   const { watchPosition } = useLocation();
   const { user, profile } = useBoundStore((state) => state);
   const [locations, setLocations] = useState<UserLocation[]>([]);
+  const liveUserUseCase = LiveUserUseCase();
 
   const animatedRegion = useRef(
     new AnimatedRegion({
@@ -59,7 +60,7 @@ const useLiveUserModel = () => {
   }, [profile, user]);
 
   useEffect(() => {
-    const init = async () => {
+    const initDefaultLocation = async () => {
       const location = await getLocation();
       setDefaultLocation((prev) => ({
         ...prev,
@@ -67,7 +68,32 @@ const useLiveUserModel = () => {
       }));
     };
 
-    init();
+    const initMarker = async () => {
+      if (locationPermissions !== 'granted') {
+        await requestLocationPermission();
+      }
+    };
+
+    if (user) {
+      if (profile?.role === 'Buyer') {
+        liveUserUseCase.subscribeSellerLocation(setLocations);
+      }
+
+      if (profile?.role === 'Seller') {
+        watchPosition(user, (newLocation) => {
+          animateMarker(newLocation.latitude, newLocation.longitude);
+        });
+        liveUserUseCase.subscribeBuyerLocation((setLocations));
+      }
+    }
+
+    initDefaultLocation();
+    initMarker();
+
+    return () => {
+      Geolocation.stopObserving();
+    };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,34 +108,6 @@ const useLiveUserModel = () => {
       };
     }, [handleHardwareBackPress])
   );
-
-  useEffect(() => {
-    const init = async () => {
-      if (locationPermissions !== 'granted') {
-        await requestLocationPermission();
-      }
-    };
-
-    if (user) {
-      if (profile?.role === 'Buyer') {
-        userService.subscribeSellerLocation(setLocations);
-      }
-
-      if (profile?.role === 'Seller') {
-        watchPosition(user, (newLocation) => {
-          animateMarker(newLocation.latitude, newLocation.longitude);
-        });
-        userService.subscribeBuyerLocation(setLocations);
-      }
-    }
-
-    init();
-
-    return () => {
-      Geolocation.stopObserving();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const animateMarker = (latitude: number, longitude: number) => {
     const newCoordinate = { latitude, longitude };

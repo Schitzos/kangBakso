@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import route from './route';
 import BootSplash from 'react-native-bootsplash';
 import { useBoundStore } from '../stateManagement/store';
-import { RootStackParamList } from '@/core/domains/routesStack/entities/routes';
+import { RootStackParamList } from '@/app/navigation/type';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

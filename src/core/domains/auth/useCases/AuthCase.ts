@@ -8,7 +8,7 @@ interface AuthUseCase {
   onAuthStateChangedHandler(userData: FirebaseAuthTypes.User | null): Promise<void>;
   onLogin(payload: AuthPayload): Promise<AuthPayload>;
   onLogout(stopWatchingPosition: () => void): Promise<string>;
-  setUserOffline(callback: () => void): Promise<void>;
+  setUserOffline(callback?: () => void): Promise<void>;
   checkLogin(
     data: FormDataLogin,
     checkLocationPermission: boolean,
