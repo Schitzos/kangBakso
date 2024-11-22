@@ -2,6 +2,7 @@ import { useBoundStore } from '@/store/store';
 import {  useCallback } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export function useAccessPermission() {
   const { locationPermissions, setLocationPermissions } = useBoundStore((state) => state);
@@ -31,6 +32,8 @@ export function useAccessPermission() {
         }
       }
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.warn(error);
       setLocationPermissions('denied');
     }
@@ -38,14 +41,28 @@ export function useAccessPermission() {
 
   const checkLocationPermission = useCallback(async () => {
     try {
-      const granted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-      setLocationPermissions(granted ? 'granted' : 'denied');
-      return granted;
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        );
+        setLocationPermissions(granted ? 'granted' : 'denied');
+        return granted;
+      } else {
+        const authStatus = await Geolocation.requestAuthorization('whenInUse');
+        if (authStatus === 'granted') {
+          setLocationPermissions('granted');
+          return true;
+        } else {
+          setLocationPermissions('denied');
+          return false;
+        }
+      }
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.warn(error);
       setLocationPermissions('denied');
+      return false;
     }
   }, [setLocationPermissions]);
 

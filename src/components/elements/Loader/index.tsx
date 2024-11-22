@@ -3,6 +3,13 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import TextView from '../TextView';
 
+/**
+ * A functional component that renders a loading indicator.
+ * It consists of an activity indicator with a specified size
+ * and color, and a text message indicating a loading state.
+ *
+ * @returns {JSX.Element} The rendered component with a loading indicator and text.
+ */
 const Loading = () => {
   return (
     <View style={styles.container}>

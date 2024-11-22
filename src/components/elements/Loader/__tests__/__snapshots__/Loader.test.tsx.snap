@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader Component matches snapshot with default props 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "transparent",
+      "flex": 1,
+      "gap": 8,
+      "justifyContent": "center",
+      "minHeight": 72,
+      "padding": 16,
+    }
+  }
+>
+  <ActivityIndicator
+    color="#ED0226"
+    size="large"
+  />
+  <View
+    style={
+      [
+        {
+          "alignItems": "flex-start",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        },
+        {
+          "alignItems": "center",
+          "gap": 2,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#001A41",
+            "fontFamily": "Poppins-Regular",
+            "fontSize": 12,
+            "marginBottom": 0,
+            "width": "auto",
+          },
+          {
+            "color": "#001A41",
+            "fontFamily": "Poppins-Regular",
+            "fontSize": 12,
+            "fontWeight": "normal",
+            "lineHeight": undefined,
+            "marginBottom": 0,
+            "textAlign": "left",
+            "textTransform": "none",
+          },
+        ]
+      }
+    >
+      Loading ...
+    </Text>
+  </View>
+</View>
+`;

@@ -46,6 +46,7 @@ export function useLocation() {
           userService.updateLocationInFirestore(latitude, longitude, user);
           userLocationRef.current = { latitude, longitude };
           setLocation({ latitude, longitude });
+          return { latitude, longitude };
         }
       },
       (error) => {

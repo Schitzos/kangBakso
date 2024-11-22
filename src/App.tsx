@@ -8,28 +8,38 @@ import { useAuth } from './hooks/auth/useAuth';
 import useAppState from './hooks/appState/useAppState';
 import ContextProvider from './context';
 import Toast from 'react-native-toast-message';
+import { useBackgroundJob } from './hooks/background/useBackgroundJob';
+import { LogBox } from 'react-native';
+import Offline from './components/elements/Offline';
 
+// Configure Google Sign-In
 GoogleSignin.configure({
   webClientId: Config.WEB_CLIENT_ID,
 });
 
 function App(): React.JSX.Element {
-  const { onAuthStateChanged, setUserOffline } = useAuth();
+  const { onAuthStateChanged } = useAuth();
+  const { doBackgroundTask } = useBackgroundJob();
 
+  // Handle app state changes
+  useAppState(() => {
+    doBackgroundTask({ isBackgroundJob: true });
+  });
+
+  // Monitor authentication state
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber; // Unsubscribe on component unmount
   }, [onAuthStateChanged]);
 
-  useAppState(() => {
-    setUserOffline({ isBackgroundJob: true });
-  });
+  LogBox.ignoreAllLogs();
 
   return (
     <GestureHandlerRootView>
       <ContextProvider>
         <Navigation />
         <Toast />
+        <Offline/>
       </ContextProvider>
     </GestureHandlerRootView>
   );

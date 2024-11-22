@@ -1,5 +1,6 @@
 import { UserData } from '@/type/User/type';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export interface AuthPayload {
   name: string;
@@ -21,6 +22,8 @@ const doAauth = async (payload: AuthPayload) => {
     return updatedData;
 
   } catch (error) {
+    crashlytics().log(`Error ${error as Error}`);
+    crashlytics().recordError(error as Error);
     console.error('Error in doAauth:', error);
     throw error;
   }

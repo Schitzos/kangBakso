@@ -9,7 +9,7 @@ import { styles } from './styles';
 import { useBoundStore } from '@/store/store';
 import { useAuth } from '@/hooks/auth/useAuth';
 
-export default function CloseConfirmationModal({ setIsModalOpen }:{setIsModalOpen:Function}) {
+export default function CloseConfirmationModal({ setIsModalOpen }:Readonly<{setIsModalOpen:Function}>) {
   const { profile } = useBoundStore.getState();
   const {  setUserOffline } = useAuth();
   return (
@@ -21,7 +21,7 @@ export default function CloseConfirmationModal({ setIsModalOpen }:{setIsModalOpe
         </TextView>
         <Button
           label="OK"
-          onPress={() => setUserOffline({ isBackgroundJob: false })}
+          onPress={() => setUserOffline()}
           size="large"
           fontWeight="400"
         />

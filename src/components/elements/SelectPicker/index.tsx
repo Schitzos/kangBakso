@@ -19,6 +19,20 @@ interface SelectPickerProps {
   label?: string;
 }
 
+/**
+ * A customizable select picker component using `DropDownPicker`.
+ *
+ * This component renders a dropdown picker with a list of options, displaying
+ * the selected value and allowing the user to change the selection. It also
+ * supports displaying an optional label and error message.
+ *
+ * @prop {PickerOption[]} options - An array of objects representing the options for the picker. Each object should have a `label` and `value`.
+ * @prop {string | null} selectedValue - The currently selected value of the picker.
+ * @prop {(value: string) => void} onValueChange - A callback function that is called when the selected value changes.
+ * @prop {string} [error] - An optional error message to display below the picker.
+ * @prop {string} [placeholder='Pilih salah satu'] - An optional placeholder text to display when no value is selected.
+ * @prop {string} [label] - An optional label text to display above the picker.
+ */
 const SelectPicker: React.FC<SelectPickerProps> = ({ options = [], selectedValue, onValueChange, error, placeholder = 'Pilih salah satu', label }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(selectedValue);
