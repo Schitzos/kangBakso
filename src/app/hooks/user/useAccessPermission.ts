@@ -2,7 +2,7 @@ import {  useCallback } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useBoundStore } from '@/app/store/store';
+import { useBoundStore } from '@/app/stateManagement/store';
 
 export function useAccessPermission() {
   const { locationPermissions, setLocationPermissions } = useBoundStore((state) => state);

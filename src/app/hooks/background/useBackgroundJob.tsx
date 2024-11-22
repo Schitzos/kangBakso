@@ -4,7 +4,7 @@ import { AppState, AppStateStatus } from 'react-native';
 import Config from 'react-native-config';
 import authService from '@/services/auth/auth.service';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useBoundStore } from '@/app/store/store';
+import { useBoundStore } from '@/app/stateManagement/store';
 
 export function useBackgroundJob() {
   let timerId = useRef<NodeJS.Timeout | null>(null);

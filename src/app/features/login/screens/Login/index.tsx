@@ -4,7 +4,7 @@ import IconLogin from '@assets/icon/icon-login.svg';
 import TextView from '@/app/components/elements/TextView';
 import FBAuthForm from '@/app/components/forms/FbAuthForm';
 import RoleForm from '@/app/components/forms/RoleForm';
-import { useBoundStore } from '@/app/store/store';
+import { useBoundStore } from '@/app/stateManagement/store';
 import { styles } from './styles';
 
 export default function Login(){

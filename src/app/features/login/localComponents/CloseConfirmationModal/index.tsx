@@ -1,17 +1,17 @@
 import React from 'react';
-import {   View } from 'react-native';
+import { View } from 'react-native';
 import IconConfirmation from '@assets/icon/icon-confirmation.svg';
 import { styles } from './styles';
-import { useAuth } from '@/app/hooks/auth/useAuth';
 import BottomSheetModal from '@/app/components/elements/BottomSheet';
 import TextView from '@/app/components/elements/TextView';
 import Button from '@/app/components/elements/Button';
 import theme from '@/app/styles/theme';
-import { useBoundStore } from '@/app/store/store';
+import { useBoundStore } from '@/app/stateManagement/store';
+import useLoginViewModel from '../../viewModel/useLoginViewModel';
 
 export default function CloseConfirmationModal({ setIsModalOpen }:Readonly<{setIsModalOpen:Function}>) {
   const { profile } = useBoundStore.getState();
-  const {  setUserOffline } = useAuth();
+  const { setUserOffline } = useLoginViewModel();
   return (
     <BottomSheetModal onClose={() => setIsModalOpen(false)} snapPoints={[ '40%', '40%']}>
       <View style={styles.container}>

@@ -10,7 +10,7 @@ import { styles } from './styles';
 import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
 import { useLocation } from '@/app/hooks/user/useLocation';
 import TextView from '@/app/components/elements/TextView';
-import { useBoundStore } from '@/app/store/store';
+import { useBoundStore } from '@/app/stateManagement/store';
 
 export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();

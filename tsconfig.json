@@ -14,6 +14,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@assets/*": ["./assets/*"],
+      "@components/*": ["./src/app/components/*"],
     }
   },
   "include": ["src/**/*"],

@@ -1,27 +1,10 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-
 import GoogleIcon from '@assets/icon/icon-google.svg';
-import crashlytics from '@react-native-firebase/crashlytics';
-import Button from '../../elements/Button';
-import { useAuth } from '@/app/hooks/auth/useAuth';
-import { RootStackParamList } from '@/app/navigation/types';
+import Button from '@components/elements/Button';
+import useLoginViewModel from '@/app/features/login/viewModel/useLoginViewModel';
 
 export default function FBAuthForm() {
-  const { onGoogleSignIn } = useAuth();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
-
-  const handleLogin = async () => {
-    try {
-      await onGoogleSignIn();
-      navigation.navigate('Login', { refresh: true });
-    } catch (error) {
-      crashlytics().log(`Error ${error as Error}`);
-      crashlytics().recordError(error as Error);
-      console.error('Google Sign-In failed:', error);
-    }
-  };
+  const { handleLogin } = useLoginViewModel();
 
   return (
     <Button
