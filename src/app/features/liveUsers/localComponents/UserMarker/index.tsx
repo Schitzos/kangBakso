@@ -1,75 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Marker, AnimatedRegion } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
-import userService from '@/services/user/user.service';
-import { UserLocation } from '@/type/User/type';
+import React from 'react';
+import { Marker } from 'react-native-maps';
 import IconBuyer from '@assets/icon/Icon-buyer.svg';
 import IconSeller from '@assets/icon/Icon-seller.svg';
 import { View } from 'react-native';
 import { styles } from './styles';
-import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
-import { useLocation } from '@/app/hooks/user/useLocation';
 import TextView from '@/app/components/elements/TextView';
-import { useBoundStore } from '@/app/stateManagement/store';
+import useLiveUserModel from '../../viewModel/useLiveUserModel';
 
 export default function UserMarker() {
-  const { requestLocationPermission, locationPermissions } = useAccessPermission();
-  const { watchPosition } = useLocation();
-  const { user, profile } = useBoundStore((state) => state);
-
-  const [locations, setLocations] = useState<UserLocation[]>([]);
-
-  // Initialize AnimatedRegion
-  const animatedRegion = useRef(
-    new AnimatedRegion({
-      latitude: profile?.location?.latitude || 0,
-      longitude: profile?.location?.longitude || 0,
-      latitudeDelta: 0.01, // Initial map zoom
-      longitudeDelta: 0.01, // Initial map zoom
-    })
-  ).current;
-
-  useEffect(() => {
-    const init = async () => {
-      if (locationPermissions !== 'granted') {
-        await requestLocationPermission();
-      }
-    };
-
-    if (user) {
-      if (profile?.role === 'Buyer') {
-        userService.subscribeSellerLocation(setLocations);
-      }
-
-      if (profile?.role === 'Seller') {
-        watchPosition(user, (newLocation) => {
-          animateMarker(newLocation.latitude, newLocation.longitude);
-        });
-        userService.subscribeBuyerLocation(setLocations);
-      }
-    }
-
-    init();
-
-    return () => {
-      Geolocation.stopObserving();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const animateMarker = (latitude: number, longitude: number) => {
-    const newCoordinate = { latitude, longitude };
-
-    animatedRegion.timing({
-      ...newCoordinate,
-      duration: 1000, // Smooth transition duration
-      useNativeDriver: false,
-      toValue: 0,
-      latitudeDelta: 0,
-      longitudeDelta: 0,
-    }).start();
-  };
-
+  const {  animatedRegion, profile, locations } = useLiveUserModel();
   return (
     <>
       {/* Animated marker for the current user's location */}

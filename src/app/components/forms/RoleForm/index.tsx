@@ -12,11 +12,6 @@ import SelectPicker from '@components/elements/SelectPicker';
 import TextView from '@components/elements/TextView';
 import Button from '@components/elements/Button';
 
-export interface FormDataLogin {
-  name: string;
-  role: string;
-}
-
 export default function RoleForm(){
   const { user } = useBoundStore((state) => state);
   const { control, errors, handleSubmit, handleLoginForm, handleLogoutForm, checkLogin, isChecked, setIsChecked } = useLoginViewModel();

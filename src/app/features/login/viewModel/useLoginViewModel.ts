@@ -1,118 +1,66 @@
-import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import crashlytics from '@react-native-firebase/crashlytics';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/app/navigation/types';
 import { useLocation } from '@/app/hooks/user/useLocation';
-import { GeoPoint } from '@react-native-firebase/firestore';
-import authService, { AuthPayload } from '@/services/auth/auth.service';
 import { useBoundStore } from '@/app/stateManagement/store';
-import { mapFirebaseUserToUserData } from '@/app/utils/common';
 import { useForm } from 'react-hook-form';
-import { FormDataLogin } from '@/app/components/forms/RoleForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchemaValidation } from '@/app/components/forms/RoleForm/validation';
 import { FirebaseMutation } from '@/infrastructure/network/tanstackAdapter';
 import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
-import { Alert, Linking, Platform } from 'react-native';
 import { useState } from 'react';
+import { FormDataLogin } from '@/core/domains/auth/entities/LoginAuth';
+import { RootStackParamList } from '@/core/domains/routesStack/entities/routes';
+import AuthCase from '@/core/domains/auth/useCases/AuthCase';
+import { GeoPoint } from '@react-native-firebase/firestore';
 
 const useLoginViewModel = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
-  const { clearUser, setProfile, user, profile } = useBoundStore.getState();
+  const { profile, user } = useBoundStore.getState();
   const { getLocation, stopWatchingPosition } = useLocation();
-  const  { requestLocationPermission, checkLocationPermission } = useAccessPermission();
+  const { requestLocationPermission, checkLocationPermission } = useAccessPermission();
   const [isChecked, setIsChecked] = useState(false);
+  const authUseCase = AuthCase();
 
   const handleLogin = async () => {
-    try {
-      await onGoogleSignIn();
-      navigation.navigate('Login', { refresh: true });
-    } catch (error) {
-      crashlytics().log(`Error ${error as Error}`);
-      crashlytics().recordError(error as Error);
-      console.error('Google Sign-In failed:', error);
-    }
+    return await authUseCase.onGoogleSignIn();
   };
 
-  const onGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const response = await GoogleSignin.signIn();
+  const onLogin = async (data: FormDataLogin) => {
+    const location = await getLocation();
+    const payload = {
+      name: data.name,
+      location: new GeoPoint(location.latitude, location.longitude),
+      role: data.role,
+      isOnline: true,
+      lastOnline: Date.now(),
+      email: user?.email ?? '',
+    };
 
-      if (isSuccessResponse(response)) {
-        const { data } = response;
-        const idToken = data?.idToken;
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        return auth().signInWithCredential(googleCredential);
-      }
+    try {
+      await authUseCase.onLogin(payload);
     } catch (error) {
-      crashlytics().log(`Error ${error as Error}`);
-      crashlytics().recordError(error as Error);
-      console.log('Google Sign-In Error:', error);
+      console.error('Error during login:', error);
       throw error;
     }
   };
 
-  const onLogin = async (data: any) => {
-    try {
-      const location = await getLocation();
-      const payload = {
-        name: data.name,
-        location: new GeoPoint(location.latitude, location.longitude),
-        role: data.role,
-        isOnline: true,
-        lastOnline: Date.now(),
-        email: user?.email,
-      };
-      const dataAuth = await authService.doAauth(payload as AuthPayload);
-      const modProfile =  { role: dataAuth?.role, location: dataAuth?.location, name: dataAuth?.name };
+  const handleLoginForm = FirebaseMutation({
+    options: onLogin,
+    callback: () => navigation.navigate('Home'),
+  });
 
-      useBoundStore.setState({ profile: modProfile });
-      return modProfile;
-
-    } catch (error) {
-      crashlytics().log(`Error ${error as Error}`);
-      crashlytics().recordError(error as Error);
-      console.log('Login Error:', error);
-      throw error;
-    }
-  };
 
   const onLogout = async () => {
-    try {
-      const payload = {
-        isOnline: false,
-      };
-      if(user){
-        await authService.setOffline({ user, payload });
-      }
-      clearUser();
-      setProfile(null);
-      stopWatchingPosition();
-      await auth().signOut();
-      await GoogleSignin.signOut();
-    } catch (error) {
-      crashlytics().log(`Error ${error as Error}`);
-      crashlytics().recordError(error as Error);
-      console.log('Sign-Out Error:', error);
-      throw error;
-    }
+    return await authUseCase.onLogout(stopWatchingPosition);
   };
+
+  const handleLogoutForm = FirebaseMutation({
+    options: onLogout,
+    callback: () => navigation.navigate('Login', { refresh: true }),
+  });
 
   const setUserOffline = async ()=>{
-    if(user){
-      await authService.setOffline({ user, payload: { isOnline: false } });
-      setProfile(null);
-    }
-  };
-
-  const onAuthStateChanged = async (userData: FirebaseAuthTypes.User | null) => {
-    const mappedUserData = mapFirebaseUserToUserData(userData);
-    if (mappedUserData) {
-      useBoundStore.getState().setUser(mappedUserData);
-    }
+    return await authUseCase.setUserOffline(()=>navigation.navigate('Login', { refresh: true }));
   };
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
@@ -124,53 +72,15 @@ const useLoginViewModel = () => {
     resolver: yupResolver(signInSchemaValidation),
   });
 
-  const handleLoginForm = FirebaseMutation({
-    options: onLogin,
-    callback: () => navigation.navigate('Home'),
-  });
-
-  const handleLogoutForm = FirebaseMutation({
-    options: onLogout,
-    callback: () => navigation.navigate('Login', { refresh: true }),
-  });
-
   const checkLogin = async (data:FormDataLogin) => {
     const granted = await checkLocationPermission();
-    if(!granted){
-      const isAllow = await requestLocationPermission();
-      if(isAllow === 'granted'){
-        checkLogin(data);
-      }else{
-        Alert.alert(
-          'Location Permission Needed',
-          `Location access is needed to find nearby Bakso ${data.role === 'Seller' ? 'Customers' : 'Vendors'}. Please enable location permissions in settings.`,
-          [
-            { text: 'Cancel', style: 'cancel' },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                if (Platform.OS === 'ios') {
-                  Linking.openURL('app-settings:');  // Opens app settings on iOS
-                } else if (Platform.OS === 'android') {
-                  Linking.openSettings(); // Opens settings on Android
-                }
-              },
-            },
-          ]
-        );
-      }
-    }else{
-      handleLoginForm.mutate(data);
-    }
+    const isAllow = await requestLocationPermission() || '';
+    return await authUseCase.checkLogin(data, granted, isAllow, ()=>handleLoginForm.mutate(data));
   };
 
   return {
     handleLogin,
-    onLogin,
-    onLogout,
     setUserOffline,
-    onAuthStateChanged,
-    onGoogleSignIn,
     control,
     handleSubmit,
     errors,

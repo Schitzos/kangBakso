@@ -2,11 +2,11 @@ import React from 'react';
 import {
   NavigationContainer,
 } from '@react-navigation/native';
-import { RootStackParamList } from './types';
 import { createStackNavigator } from '@react-navigation/stack';
 import route from './route';
 import BootSplash from 'react-native-bootsplash';
 import { useBoundStore } from '../stateManagement/store';
+import { RootStackParamList } from '@/core/domains/routesStack/entities/routes';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -18,7 +18,6 @@ export default function Navigation() {
     }
     return 'Login';
   };
-
   return (
     <NavigationContainer
       onReady={() => {

@@ -1,6 +1,7 @@
 // slices/user-slices.ts
+import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
 import MMKVstorage from '@/infrastructure/storage/mmkv';
-import { ProfileData, UserData } from '@/type/User/type';
+import { ProfileData } from '@/type/User/type';
 import { PermissionsAndroid } from 'react-native';
 import { StateCreator } from 'zustand';
 

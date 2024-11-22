@@ -8,9 +8,9 @@ import { LogBox } from 'react-native';
 import Navigation from './navigation';
 import ContextProvider from './utils/context';
 import Offline from './components/elements/Offline';
-import { useAuth } from './hooks/auth/useAuth';
 import { useBackgroundJob } from './hooks/background/useBackgroundJob';
 import useAppState from './hooks/appState/useAppState';
+import AuthCase from '@/core/domains/auth/useCases/AuthCase';
 
 // Configure Google Sign-In
 GoogleSignin.configure({
@@ -18,8 +18,8 @@ GoogleSignin.configure({
 });
 
 function App(): React.JSX.Element {
-  const { onAuthStateChanged } = useAuth();
   const { doBackgroundTask } = useBackgroundJob();
+  const authUseCase = AuthCase();
 
   // Handle app state changes
   useAppState(() => {
@@ -28,9 +28,10 @@ function App(): React.JSX.Element {
 
   // Monitor authentication state
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // Unsubscribe on component unmount
-  }, [onAuthStateChanged]);
+    const subscriber = auth().onAuthStateChanged(authUseCase.onAuthStateChangedHandler);
+    return subscriber;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   LogBox.ignoreAllLogs();
 

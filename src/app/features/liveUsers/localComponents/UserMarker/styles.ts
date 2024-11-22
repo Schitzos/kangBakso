@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     gap: 2,
     width: 300,
     position: 'relative',
-    bottom: -6,
+    bottom: -4,
   },
   labelMarker: {
     display: 'flex',
