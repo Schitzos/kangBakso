@@ -1,7 +1,7 @@
 import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useLocation } from '../user/useLocation';
-import { mapFirebaseUserToUserData } from '@/utils/common';
+import { mapFirebaseUserToUserData } from '@/app/utils/common';
 import authService, { AuthPayload } from '@/services/auth/auth.service';
 import { GeoPoint } from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';

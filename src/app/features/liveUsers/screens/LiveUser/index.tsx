@@ -5,9 +5,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 
-import UserMarker from '@/fragments/Home/UserMarker';
-import CloseConfirmationModal from '@/fragments/Home/CloseConfirmationModal';
-
 import IconClose from '@assets/icon/icon-close.svg';
 
 import { styles } from './styles';
@@ -16,6 +13,8 @@ import { RootStackParamList } from '@/app/navigation/types';
 import Loading from '@/app/components/elements/Loader';
 import theme from '@/app/styles/theme';
 import { useBoundStore } from '@/app/store/store';
+import UserMarker from '@/app/features/login/localComponents/UserMarker';
+import CloseConfirmationModal from '@/app/features/login/localComponents/CloseConfirmationModal';
 
 export default function Home() {
   const { user, profile } = useBoundStore((state) => state);

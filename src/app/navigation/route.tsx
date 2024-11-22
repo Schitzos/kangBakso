@@ -2,7 +2,6 @@ import React from 'react';
 import { Suspensed } from './suspense';
 
 export default {
-  LoginScreen: Suspensed(React.lazy(() => import('../screens/Login'))),
-  HomeScreen: Suspensed(React.lazy(() => import('../screens/Home'))),
-  OfflineScreen: Suspensed(React.lazy(() => import('../screens/Offline'))),
+  LoginScreen: Suspensed(React.lazy(() => import('../features/login/screens/Login'))),
+  HomeScreen: Suspensed(React.lazy(() => import('../features/liveUsers/screens/LiveUser'))),
 };

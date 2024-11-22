@@ -1,6 +1,6 @@
 // slices/user-slices.ts
+import MMKVstorage from '@/infrastructure/storage/mmkv';
 import { ProfileData, UserData } from '@/type/User/type';
-import MMKVstorage from '@/utils/adapters/mmkv';
 import { PermissionsAndroid } from 'react-native';
 import { StateCreator } from 'zustand';
 

@@ -7,7 +7,6 @@ import { Alert, Linking, Platform, View } from 'react-native';
 import { styles } from './styles';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchemaValidation } from './validation';
-import { FirebaseMutation } from '@/utils/adapters/tanstackAdapter';
 import Loading from '../../elements/Loader';
 import TextField from '../../elements/TextField';
 import SelectPicker from '../../elements/SelectPicker';
@@ -18,6 +17,7 @@ import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
 import { RootStackParamList } from '@/app/navigation/types';
 import theme from '@/app/styles/theme';
 import { useBoundStore } from '@/app/store/store';
+import { FirebaseMutation } from '@/infrastructure/network/tanstackAdapter';
 
 export interface FormDataLogin {
   name: string;
