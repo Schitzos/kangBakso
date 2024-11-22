@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Marker, AnimatedRegion } from 'react-native-maps';
-import { useBoundStore } from '@/store/store';
 import Geolocation from 'react-native-geolocation-service';
-import { useAccessPermission } from '@/hooks/user/useAccessPermission';
-import { useLocation } from '@/hooks/user/useLocation';
 import userService from '@/services/user/user.service';
 import { UserLocation } from '@/type/User/type';
 import IconBuyer from '@assets/icon/Icon-buyer.svg';
 import IconSeller from '@assets/icon/Icon-seller.svg';
 import { View } from 'react-native';
-import TextView from '@/components/elements/TextView';
 import { styles } from './styles';
+import { useAccessPermission } from '@/app/hooks/user/useAccessPermission';
+import { useLocation } from '@/app/hooks/user/useLocation';
+import TextView from '@/app/components/elements/TextView';
+import { useBoundStore } from '@/app/store/store';
 
 export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();

@@ -1,13 +1,13 @@
 import React from 'react';
 import {   View } from 'react-native';
-import TextView from '@/components/elements/TextView';
-import BottomSheetModal from '@/components/elements/BottomSheet';
 import IconConfirmation from '@assets/icon/icon-confirmation.svg';
-import Button from '@/components/elements/Button';
-import theme from '@/styles/theme';
 import { styles } from './styles';
-import { useBoundStore } from '@/store/store';
-import { useAuth } from '@/hooks/auth/useAuth';
+import { useAuth } from '@/app/hooks/auth/useAuth';
+import BottomSheetModal from '@/app/components/elements/BottomSheet';
+import TextView from '@/app/components/elements/TextView';
+import Button from '@/app/components/elements/Button';
+import theme from '@/app/styles/theme';
+import { useBoundStore } from '@/app/store/store';
 
 export default function CloseConfirmationModal({ setIsModalOpen }:Readonly<{setIsModalOpen:Function}>) {
   const { profile } = useBoundStore.getState();
