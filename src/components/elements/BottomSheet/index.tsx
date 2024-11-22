@@ -6,6 +6,7 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 
+
 configureReanimatedLogger({
   level: ReanimatedLogLevel.error,
   strict: false, // Reanimated runs in strict mode by default
@@ -71,5 +72,4 @@ export default function BottomSheetModal({ snapPoints = ['25%', '50%', '75%'], c
       </BottomSheetScrollView>
     </BottomSheet>
   );
-
 }

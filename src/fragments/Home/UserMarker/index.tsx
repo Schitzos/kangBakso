@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Marker } from 'react-native-maps';
+import { Marker, AnimatedRegion } from 'react-native-maps';
 import { useBoundStore } from '@/store/store';
 import Geolocation from 'react-native-geolocation-service';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
@@ -16,9 +16,18 @@ export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
   const { watchPosition } = useLocation();
   const { user, profile } = useBoundStore((state) => state);
+
   const [locations, setLocations] = useState<UserLocation[]>([]);
-  const [myLocation, setMyLocation] = useState({ latitude: profile?.location.latitude, longitude: profile?.location.longitude });
-  const unsubscribeRef = useRef<() => void | undefined>();
+
+  // Initialize AnimatedRegion
+  const animatedRegion = useRef(
+    new AnimatedRegion({
+      latitude: profile?.location?.latitude || 0,
+      longitude: profile?.location?.longitude || 0,
+      latitudeDelta: 0.01, // Initial map zoom
+      longitudeDelta: 0.01, // Initial map zoom
+    })
+  ).current;
 
   useEffect(() => {
     const init = async () => {
@@ -26,44 +35,66 @@ export default function UserMarker() {
         await requestLocationPermission();
       }
     };
-    if (user && profile?.role === 'Buyer') {
-      unsubscribeRef.current = userService.subscribeSellerLocation(setLocations);
+
+    if (user) {
+      if (profile?.role === 'Buyer') {
+        userService.subscribeSellerLocation(setLocations);
+      }
+
+      if (profile?.role === 'Seller') {
+        watchPosition(user, (newLocation) => {
+          animateMarker(newLocation.latitude, newLocation.longitude);
+        });
+        userService.subscribeBuyerLocation(setLocations);
+      }
     }
 
-    if (user && profile?.role === 'Seller') {
-      watchPosition(user, setMyLocation);
-      unsubscribeRef.current = userService.subscribeBuyerLocation(setLocations);
-    }
     init();
 
     return () => {
-      unsubscribeRef.current?.();
       Geolocation.stopObserving();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const animateMarker = (latitude: number, longitude: number) => {
+    const newCoordinate = { latitude, longitude };
+
+    animatedRegion.timing({
+      ...newCoordinate,
+      duration: 1000, // Smooth transition duration
+      useNativeDriver: false,
+      toValue: 0,
+      latitudeDelta: 0,
+      longitudeDelta: 0,
+    }).start();
+  };
 
   return (
     <>
-      <Marker
-        coordinate={{ latitude: myLocation.latitude!, longitude: myLocation.longitude! }}
+      {/* Animated marker for the current user's location */}
+      <Marker.Animated
+        coordinate={{
+          latitude: animatedRegion.latitude,
+          longitude: animatedRegion.longitude,
+        }}
         title={profile?.name}
         description={`Online ${profile?.role}`}
       >
         <View style={styles.customMarker}>
-          {profile?.role === 'Buyer' && <IconBuyer width={40} height={40}/>}
-          {profile?.role === 'Seller' && <IconSeller width={40} height={40}/>}
+          {profile?.role === 'Buyer' && <IconBuyer width={40} height={40} />}
+          {profile?.role === 'Seller' && <IconSeller width={40} height={40} />}
         </View>
-      </Marker>
+      </Marker.Animated>
+      {/* Static markers for other users */}
       {locations.map((location) => (
         <Marker
           key={location.id}
           coordinate={{ latitude: location.latitude, longitude: location.longitude }}
         >
-          {/* <View> */}
           <View style={styles.customMarker}>
-            {profile?.role === 'Buyer' && <IconSeller width={40} height={40}/>}
-            {profile?.role === 'Seller' && <IconBuyer width={40} height={40}/>}
+            {profile?.role === 'Buyer' && <IconSeller width={40} height={40} />}
+            {profile?.role === 'Seller' && <IconBuyer width={40} height={40} />}
             <View style={styles.labelMarker}>
               <TextView>{location.name}</TextView>
             </View>
@@ -73,4 +104,3 @@ export default function UserMarker() {
     </>
   );
 }
-
