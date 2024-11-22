@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import BackgroundJob from 'react-native-background-actions';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 type AppStateChangeHandler = (nextAppState: AppStateStatus) => void;
 
@@ -18,6 +19,8 @@ const useAppState = (onBackground: AppStateChangeHandler) => {
           await BackgroundJob.stop(); // Stop the background job when app is active
           console.log('Background job stopped');
         } catch (error) {
+          crashlytics().log(`Error ${error as Error}`);
+          crashlytics().recordError(error as Error);
           console.log('Error stopping background job:', error);
         }
       }

@@ -5,6 +5,7 @@ import { useLocation } from '../user/useLocation';
 import { mapFirebaseUserToUserData } from '@/utils/common';
 import authService, { AuthPayload } from '@/services/auth/auth.service';
 import { GeoPoint } from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export function useAuth() {
   const { clearUser, setProfile, user } = useBoundStore.getState();
@@ -23,6 +24,8 @@ export function useAuth() {
         return auth().signInWithCredential(googleCredential);
       }
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.log('Google Sign-In Error:', error);
       throw error;
     }
@@ -46,6 +49,8 @@ export function useAuth() {
       return profile;
 
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.log('Login Error:', error);
       throw error;
     }
@@ -65,6 +70,8 @@ export function useAuth() {
       await auth().signOut();
       await GoogleSignin.signOut();
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.log('Sign-Out Error:', error);
       throw error;
     }

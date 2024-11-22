@@ -4,6 +4,7 @@ import { AppState, AppStateStatus } from 'react-native';
 import Config from 'react-native-config';
 import authService from '@/services/auth/auth.service';
 import { useBoundStore } from '@/store/store';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export function useBackgroundJob() {
   let timerId = useRef<NodeJS.Timeout | null>(null);
@@ -39,6 +40,8 @@ export function useBackgroundJob() {
           }
         }
       } catch (error) {
+        crashlytics().log(`Error ${error as Error}`);
+        crashlytics().recordError(error as Error);
         console.log('Error managing background task:', error);
       }
     },

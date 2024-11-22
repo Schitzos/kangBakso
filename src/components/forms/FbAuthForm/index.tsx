@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/auth/useAuth';
 import { RootStackParamList } from '@/navigation/types';
 
 import GoogleIcon from '@assets/icon/icon-google.svg';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export default function FBAuthForm() {
   const { onGoogleSignIn } = useAuth();
@@ -17,6 +18,8 @@ export default function FBAuthForm() {
       await onGoogleSignIn();
       navigation.navigate('Login', { refresh: true });
     } catch (error) {
+      crashlytics().log(`Error ${error as Error}`);
+      crashlytics().recordError(error as Error);
       console.error('Google Sign-In failed:', error);
     }
   };

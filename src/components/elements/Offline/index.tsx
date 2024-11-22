@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import Config from 'react-native-config';
 import NetInfo from '@react-native-community/netinfo';
 import BottomSheetModal from '../BottomSheet';
 import TextView from '../TextView';
 import { Image, View } from 'react-native';
 import { styles } from './styles';
-
-// Configure Google Sign-In
-GoogleSignin.configure({
-  webClientId: Config.WEB_CLIENT_ID,
-});
 
 function Offline(): React.JSX.Element {
   const [isOnline, setIsOnline] = useState(true);
