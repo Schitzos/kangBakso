@@ -60,4 +60,8 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
+### Notes
+The current branch is using a **Component-Based Architecture**.  
+Switch to the branch `clean-arch` to explore the **Clean Architecture** implementation.
+
 # Have fun find your customers and bakso vendors!!
