@@ -42,10 +42,8 @@ export type ProfileData = {
   name: string;
 }
 
-export interface UserLocation {
-  id: string;
+export interface UpdateLocationInFirestorePayload {
   latitude: number;
   longitude: number;
-  name: string;
-  role: string;
+  user: UserData;
 }

@@ -1,8 +1,9 @@
-import { UserData, UserLocation } from '@/type/User/type';
+import { UpdateLocationInFirestorePayload } from '@/type/User/type';
 import firestore, { GeoPoint } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { UserLocation } from '@/type/Location/Location';
 
-const updateLocationInFirestore = (latitude: number, longitude: number, user: UserData) => {
+const updateLocationInFirestore = ({ latitude, longitude, user }: UpdateLocationInFirestorePayload) => {
   if (user) {
     firestore()
       .collection('Users')
