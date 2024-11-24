@@ -18,11 +18,7 @@ import { signInSchemaValidation } from './validation';
 import { FirebaseMutation } from '@/utils/adapters/tanstackAdapter';
 import Loading from '@/components/elements/Loader';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
-
-export interface FormDataLogin {
-  name: string;
-  role: string;
-}
+import { FormDataLogin } from '@/type/Form/LoginForm';
 
 export default function RoleForm(){
   const { user, profile } = useBoundStore((state) => state);

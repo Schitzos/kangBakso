@@ -1,15 +1,6 @@
-import { UserData } from '@/type/User/type';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
-
-export interface AuthPayload {
-  name: string;
-  location: object;
-  role: string;
-  isOnline: boolean;
-  lastOnline: number;
-  email: string;
-}
+import { AuthPayload, SetOfflinePayload } from '@/type/Auth/auth';
 
 const doAauth = async (payload: AuthPayload) => {
   try {
@@ -29,7 +20,7 @@ const doAauth = async (payload: AuthPayload) => {
   }
 };
 
-const setOffline = async ({ user, payload }: {user: UserData, payload: {isOnline: boolean}}) => {
+const setOffline = async ({ user, payload }: SetOfflinePayload) => {
   try{
     const userRef = firestore().collection('Users').doc(user?.email);
     await userRef.set(payload, { merge: true });

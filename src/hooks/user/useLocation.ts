@@ -1,13 +1,8 @@
 import userService from '@/services/user/user.service';
+import { LocationData } from '@/type/Location/Location';
 import { UserData } from '@/type/User/type';
 import { useRef } from 'react';
 import Geolocation from 'react-native-geolocation-service';
-
-interface LocationData {
-  latitude: number;
-  longitude: number;
-  error?: string;
-}
 
 export function useLocation() {
   let watchId: number | null = null;
@@ -43,7 +38,7 @@ export function useLocation() {
         );
 
         if (moved) {
-          userService.updateLocationInFirestore(latitude, longitude, user);
+          userService.updateLocationInFirestore({ latitude, longitude, user });
           userLocationRef.current = { latitude, longitude };
           setLocation({ latitude, longitude });
           return { latitude, longitude };

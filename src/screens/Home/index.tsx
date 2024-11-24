@@ -61,7 +61,7 @@ export default function Home() {
     setTimeout(() => {
       doubleBackToExitPressedOnce.current = false;
     }, 2000);
-    return true;
+    return doubleBackToExitPressedOnce.current;
   }, []);
 
   useFocusEffect(

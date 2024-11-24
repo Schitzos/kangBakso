@@ -5,12 +5,12 @@ import Geolocation from 'react-native-geolocation-service';
 import { useAccessPermission } from '@/hooks/user/useAccessPermission';
 import { useLocation } from '@/hooks/user/useLocation';
 import userService from '@/services/user/user.service';
-import { UserLocation } from '@/type/User/type';
 import IconBuyer from '@assets/icon/Icon-buyer.svg';
 import IconSeller from '@assets/icon/Icon-seller.svg';
 import { View } from 'react-native';
 import TextView from '@/components/elements/TextView';
 import { styles } from './styles';
+import { UserLocation } from '@/type/Location/Location';
 
 export default function UserMarker() {
   const { requestLocationPermission, locationPermissions } = useAccessPermission();
@@ -22,8 +22,8 @@ export default function UserMarker() {
   // Initialize AnimatedRegion
   const animatedRegion = useRef(
     new AnimatedRegion({
-      latitude: profile?.location?.latitude || 0,
-      longitude: profile?.location?.longitude || 0,
+      latitude: profile?.location?.latitude ?? 0,
+      longitude: profile?.location?.longitude ?? 0,
       latitudeDelta: 0.01, // Initial map zoom
       longitudeDelta: 0.01, // Initial map zoom
     })
