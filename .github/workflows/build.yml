@@ -46,6 +46,7 @@ jobs:
     needs:
       - sonarcloud
       - unit_test
+      
     env:
       GOOGLE_MAPS_API_KEY: ${{secrets.GOOGLE_MAPS_API_KEY}}
       WEB_CLIENT_ID: ${{secrets.WEB_CLIENT_ID}}
