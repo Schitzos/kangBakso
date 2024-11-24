@@ -13,8 +13,11 @@
     "test:cover": "jest --collectCoverage --coverageDirectory=\"./coverage\" && open ./coverage/index.html",
     "android:clean": "cd android && ./gradlew clean",
     "android:build-debug-apk": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug",
+    "android:generate-google-services-json": "node src/utils/scripts/generateGoogleServicesJson.js",
     "ios:pod-install": "cd ios && pod install --verbose",
-    "kill": "watchman watch-del-all"
+    "ios:generate-google-services-plist": "node src/utils/scripts/generateGoogleServicesInfoPlist.js",
+    "kill": "watchman watch-del-all",
+    "postinstall": "npm run android:generate-google-services-json && if [[ $(uname) == 'Darwin' ]]; then npm run ios:pod-install && npm run ios:generate-google-services-plist; fi"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.5",
@@ -29,6 +32,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@tanstack/react-query": "^5.60.5",
+    "base-64": "^1.0.0",
     "react": "18.3.1",
     "react-hook-form": "^7.53.1",
     "react-native": "0.75.4",
