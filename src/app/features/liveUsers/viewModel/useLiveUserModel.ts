@@ -2,7 +2,6 @@ import { useAccessPermission } from '@/app/hooks/access/useAccessPermission';
 import { useLocation } from '@/app/hooks/access/useLocation';
 import { useBoundStore } from '@/app/stateManagement/store';
 import { RootStackParamList } from '@/app/navigation/type';
-import { UserLocation } from '@/type/User/type';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -10,6 +9,7 @@ import { BackHandler } from 'react-native';
 import { AnimatedRegion } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import LiveUserUseCase from '@/core/domains/liveUser/useCases/LiveUserUseCase';
+import { UserLocation } from '@/core/domains/liveUser/Location';
 
 const useLiveUserModel = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
@@ -30,8 +30,8 @@ const useLiveUserModel = () => {
 
   const animatedRegion = useRef(
     new AnimatedRegion({
-      latitude: profile?.location?.latitude || 0,
-      longitude: profile?.location?.longitude || 0,
+      latitude: profile?.location?.latitude ?? 0,
+      longitude: profile?.location?.longitude ?? 0,
       latitudeDelta: 0.01, // Initial map zoom
       longitudeDelta: 0.01, // Initial map zoom
     })

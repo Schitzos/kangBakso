@@ -1,3 +1,5 @@
+import { GeoPoint } from '@react-native-firebase/firestore';
+
  type UserMetadata = {
     creationTime: number;
     lastSignInTime: number;
@@ -46,3 +48,10 @@ export interface SetOfflinePayload {
     payload: { isOnline: boolean };
   }
 
+export type RoleType = 'Buyer' | 'Seller' | undefined;
+
+export type ProfileData = {
+    role: RoleType;
+    location: GeoPoint;
+    name: string;
+  }

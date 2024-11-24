@@ -1,7 +1,7 @@
 import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
-import { UserLocation } from '@/type/User/type';
 import auth from '@react-native-firebase/auth';
 import firestore, { GeoPoint } from '@react-native-firebase/firestore';
+import { UserLocation } from '../../Location';
 
 const LiveUserImplementation = () => {
   const updateLocationInFirestore = (latitude: number, longitude: number, user: UserData) => {

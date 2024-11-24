@@ -1,7 +1,7 @@
 // slices/user-slices.ts
-import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { ProfileData, UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { LocationPermissionStatus } from '@/core/domains/liveUser/Location';
 import MMKVstorage from '@/infrastructure/storage/mmkv';
-import { ProfileData } from '@/type/User/type';
 import { PermissionsAndroid } from 'react-native';
 import { StateCreator } from 'zustand';
 
@@ -18,7 +18,6 @@ export interface UserSlice {
   setLocationPermissions: (permissions: LocationPermissionStatus) => void;
 }
 
-export type LocationPermissionStatus = 'granted' | 'denied' | 'pending';
 
 // Create the user slice
 export const createUserSlice: StateCreator<UserSlice> = (set) => {
