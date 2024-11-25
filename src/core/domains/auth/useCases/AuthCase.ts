@@ -1,7 +1,6 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import AuthImplementation from '../repositories/implementation/AuthImplementation';
-import { FormDataLogin } from '../entities/LoginAuth';
-import { AuthPayload } from '../entities/FirebaseAuth';
+import { AuthPayload, FormDataLogin } from '../entities/auth';
 
 interface AuthUseCase {
   onGoogleSignIn(): Promise<FirebaseAuthTypes.UserCredential>;

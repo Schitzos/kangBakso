@@ -1,4 +1,4 @@
-import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { UserData } from '@/core/domains/auth/entities/auth';
 import auth from '@react-native-firebase/auth';
 import firestore, { GeoPoint } from '@react-native-firebase/firestore';
 import { UserLocation } from '../../Location';

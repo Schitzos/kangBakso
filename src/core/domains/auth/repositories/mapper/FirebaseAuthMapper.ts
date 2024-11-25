@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { UserData } from '../../entities/FirebaseAuth';
+import { UserData } from '../../entities/auth';
 
 export function FirebaseAuthMapper(user: FirebaseAuthTypes.User | null): UserData | null {
   if (!user) {return null;}

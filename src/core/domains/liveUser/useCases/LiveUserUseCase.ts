@@ -1,6 +1,6 @@
 import { UserLocation } from '../Location';
 import LiveUserImplementation from '../repositories/implementation/LiveUserImplementation';
-import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { UserData } from '@/core/domains/auth/entities/auth';
 
 interface LiveUserUseCase {
   subscribeSellerLocation(callback: (locations: UserLocation[]) => void): () => void;

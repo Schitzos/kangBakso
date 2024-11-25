@@ -55,3 +55,8 @@ export type ProfileData = {
     location: GeoPoint;
     name: string;
   }
+
+export interface FormDataLogin {
+  name: string;
+  role: string;
+}

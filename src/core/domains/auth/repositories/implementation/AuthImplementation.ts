@@ -4,8 +4,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import { useBoundStore } from '@/app/stateManagement/store';
 import { Alert, Linking, Platform } from 'react-native';
 import { FirebaseAuthMapper } from '../mapper/FirebaseAuthMapper';
-import { FormDataLogin } from '../../entities/LoginAuth';
-import { AuthPayload } from '../../entities/FirebaseAuth';
+import { AuthPayload, FormDataLogin } from '../../entities/auth';
 import firestore from '@react-native-firebase/firestore';
 
 const AuthImplementation = () => {

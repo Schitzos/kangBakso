@@ -8,10 +8,10 @@ import { signInSchemaValidation } from '@/app/components/forms/RoleForm/validati
 import { FirebaseMutation } from '@/infrastructure/network/tanstackAdapter';
 import { useAccessPermission } from '@/app/hooks/access/useAccessPermission';
 import { useState } from 'react';
-import { FormDataLogin } from '@/core/domains/auth/entities/LoginAuth';
 import { RootStackParamList } from '@/app/navigation/type';
 import AuthCase from '@/core/domains/auth/useCases/AuthCase';
 import { GeoPoint } from '@react-native-firebase/firestore';
+import { FormDataLogin } from '@/core/domains/auth/entities/auth';
 
 const useLoginViewModel = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();

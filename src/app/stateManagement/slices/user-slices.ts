@@ -1,5 +1,5 @@
 // slices/user-slices.ts
-import { ProfileData, UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { ProfileData, UserData } from '@/core/domains/auth/entities/auth';
 import { LocationPermissionStatus } from '@/core/domains/liveUser/Location';
 import MMKVstorage from '@/infrastructure/storage/mmkv';
 import { PermissionsAndroid } from 'react-native';

@@ -1,4 +1,4 @@
-import { UserData } from '@/core/domains/auth/entities/FirebaseAuth';
+import { UserData } from '@/core/domains/auth/entities/auth';
 import LiveUserUseCase from '@/core/domains/liveUser/useCases/LiveUserUseCase';
 import { useRef } from 'react';
 import Geolocation from 'react-native-geolocation-service';
