@@ -74,7 +74,7 @@ const useLoginViewModel = () => {
 
   const checkLogin = async (data:FormDataLogin) => {
     const granted = await checkLocationPermission();
-    const isAllow = await requestLocationPermission() || '';
+    const isAllow = await requestLocationPermission() ?? '';
     return await authUseCase.checkLogin(data, granted, isAllow, ()=>handleLoginForm.mutate(data));
   };
 
